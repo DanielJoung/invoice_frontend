@@ -1,11 +1,12 @@
 import "./App.css";
 import Header from "./components/Header";
 import Register from "./components/Register";
-import Login from "./components/register/login/Login";
+import Login from "./components/Login";
+import CompanyLogin from "./components/register&login/CompanyLogin";
+import CompanyReigster from "./components/register&login/CompanyRegister";
 import "bulma/css/bulma.min.css";
 import { useState, useEffect } from "react";
 import { Routes, Route, useNavigate } from "react-router-dom";
-import CompanyReigster from "./components/register/login/CompanyRegister";
 
 function App() {
   const navigate = useNavigate();
@@ -16,6 +17,33 @@ function App() {
     address: "",
     companyphone: "",
   });
+
+  const loginCompany = async (e) => {
+    e.preventDefault();
+    try {
+      const res = await fetch(
+        process.env.REACT_APP_BACKEND_URL + "/company/login",
+        {
+          method: "POST",
+          body: JSON.stringify({
+            email: e.target.email.value,
+            password: e.target.password.value,
+          }),
+          headers: {
+            "Content-Type": "application/json",
+          },
+          credentials: "include",
+        }
+      );
+      console.log(res.status);
+      if (res.status === 200) {
+        console.log("login");
+        navigate("/");
+      }
+    } catch (err) {
+      console.log(err);
+    }
+  };
 
   const registerCompany = async (e) => {
     e.preventDefault();
@@ -39,8 +67,10 @@ function App() {
           },
         }
       );
+      console.log(res.json());
       if (res.status === 201) {
-        navigate("login");
+        console.log("register");
+        navigate("/login");
       }
     } catch (err) {
       console.log(err);
@@ -55,6 +85,10 @@ function App() {
         <Route
           path="/company/register"
           element={<CompanyReigster registerCompany={registerCompany} />}
+        />
+        <Route
+          path="/company/login"
+          element={<CompanyLogin loginCompany={loginCompany} />}
         />
         <Route path="/register" element={<Register />} />
         <Route path="/login" element={<Login />} />
