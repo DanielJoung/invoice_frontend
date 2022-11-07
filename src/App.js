@@ -30,9 +30,9 @@ function App() {
           }
         })
         .then((data) => {
-          console.log(data.data);
           setCompany(data.data);
         });
+      console.log(res);
     } catch (err) {
       console.log(err);
     }
@@ -40,8 +40,8 @@ function App() {
 
   const handleChange = (e) => {
     e.preventDefault();
-    console.log(company.companyname);
-    company.filter((comp) => comp.includes(e.target.value));
+    // console.log(company[0]["companyname"]);
+    company.filter((comp) => comp["companyname"].includes(e.target.value));
   };
 
   const loginUser = async (e) => {

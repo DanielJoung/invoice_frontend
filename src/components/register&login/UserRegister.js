@@ -1,6 +1,10 @@
 import React from "react";
 
 function UserReigster(props) {
+  const compName = [];
+  for (let comp of props.company) {
+    compName.push(comp.companyname);
+  }
   return (
     <>
       <h1 id="tag">Reigster</h1>
@@ -60,6 +64,11 @@ function UserReigster(props) {
               id="company"
               onChange={props.handleChange}
             />
+            <ul>
+              {compName.map((comp, i) => {
+                return <p key={i}>{comp}</p>;
+              })}
+            </ul>
           </div>
         </div>
         <div className="buttons" id="register">
