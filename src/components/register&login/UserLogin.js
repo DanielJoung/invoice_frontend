@@ -1,10 +1,10 @@
 import React from "react";
 
-function CompanyLogin(props) {
+function UserLogin(props) {
   return (
     <>
       <h1 id="tag">Login</h1>
-      <form onSubmit={props.loginCompany}>
+      <form onSubmit={props.loginUser}>
         <div className="field" id="register">
           <label className="label" htmlFor="name">
             Email
@@ -43,4 +43,4 @@ function CompanyLogin(props) {
   );
 }
 
-export default CompanyLogin;
+export default UserLogin;

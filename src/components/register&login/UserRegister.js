@@ -1,10 +1,24 @@
 import React from "react";
 
-function CompanyLogin(props) {
+function UserReigster(props) {
   return (
     <>
-      <h1 id="tag">Login</h1>
-      <form onSubmit={props.loginCompany}>
+      <h1 id="tag">Reigster</h1>
+      <form onSubmit={props.registerCompany}>
+        <div className="field" id="register">
+          <label className="label" htmlFor="name">
+            Name
+          </label>
+          <div className="control has-icons-left">
+            <input
+              className="input"
+              type="text"
+              placeholder="Name"
+              name="username"
+              id="username"
+            />
+          </div>
+        </div>
         <div className="field" id="register">
           <label className="label" htmlFor="name">
             Email
@@ -33,9 +47,24 @@ function CompanyLogin(props) {
             />
           </div>
         </div>
+        <div className="field" id="register">
+          <label className="label" htmlFor="name">
+            Company
+          </label>
+          <div className="control has-icons-left">
+            <input
+              className="input"
+              type="text"
+              placeholder="Company Name"
+              name="company"
+              id="company"
+              onChange={props.handleChange}
+            />
+          </div>
+        </div>
         <div className="buttons" id="register">
           <button className="is-primary is-rounded is-fullwidth button">
-            Login
+            Register
           </button>
         </div>
       </form>
@@ -43,4 +72,4 @@ function CompanyLogin(props) {
   );
 }
 
-export default CompanyLogin;
+export default UserReigster;
