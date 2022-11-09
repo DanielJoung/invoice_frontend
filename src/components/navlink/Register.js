@@ -4,7 +4,7 @@ import { NavLink } from "react-router-dom";
 function Register() {
   return (
     <nav id="regNav">
-      <NavLink to="/user/register">User Register</NavLink>
+      <NavLink to="/user/register">Salesperson Register</NavLink>
       <NavLink to="/company/register">Company Register</NavLink>
     </nav>
   );

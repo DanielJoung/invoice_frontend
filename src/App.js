@@ -1,7 +1,8 @@
 import "./App.css";
-import Header from "./components/Header";
-import Register from "./components/Register";
-import Login from "./components/Login";
+import Home from "./components/Home";
+import Header from "./components/navlink/Header";
+import Register from "./components/navlink/Register";
+import Login from "./components/navlink/Login";
 import CompanyLogin from "./components/register&login/CompanyLogin";
 import CompanyReigster from "./components/register&login/CompanyRegister";
 import UserReigster from "./components/register&login/UserRegister";
@@ -32,7 +33,6 @@ function App() {
         .then((data) => {
           setCompany(data.data);
         });
-      console.log(res);
     } catch (err) {
       console.log(err);
     }
@@ -40,15 +40,18 @@ function App() {
 
   const handleChange = (e) => {
     e.preventDefault();
-    // console.log(company[0]["companyname"]);
-    company.filter((comp) => comp["companyname"].includes(e.target.value));
+    // console.log(e.target.value);
+
+    setCompany(
+      company.filter((comp) => comp["companyname"].includes(e.target.value))
+    );
   };
 
   const loginUser = async (e) => {
     e.preventDefault();
     try {
       const res = await fetch(
-        process.env.REACT_APP_BACKEND_URL + "/users/login",
+        process.env.REACT_APP_BACKEND_URL + "/user/login",
         {
           method: "POST",
           body: JSON.stringify({
@@ -75,7 +78,7 @@ function App() {
     e.preventDefault();
     try {
       const res = await fetch(
-        process.env.REACT_APP_BACKEND_URL + "/users/register",
+        process.env.REACT_APP_BACKEND_URL + "/user/register",
         {
           method: "POST",
           headers: {
@@ -87,16 +90,14 @@ function App() {
             password: e.target.password.value,
             username: e.target.username.value,
           }),
-          headers: {
-            "Content-Type": "application/json",
-          },
         }
       );
-      console.log(res.json());
+      const data = await res.json();
+      console.log(data.data);
       if (res.status === 201) {
         console.log("register");
         getCompany();
-        navigate("/login");
+        navigate("user/login");
       }
     } catch (err) {
       console.log(err);
@@ -147,15 +148,12 @@ function App() {
             address: e.target.address.value,
             companyphone: e.target.companyphone.value,
           }),
-          headers: {
-            "Content-Type": "application/json",
-          },
         }
       );
       console.log(res.json());
       if (res.status === 201) {
         console.log("register");
-        navigate("/login");
+        navigate("company/login");
       }
     } catch (err) {
       console.log(err);
@@ -195,6 +193,7 @@ function App() {
         />
         <Route path="/register" element={<Register />} />
         <Route path="/login" element={<Login />} />
+        <Route path="/" element={<Home />} />
       </Routes>
     </div>
   );

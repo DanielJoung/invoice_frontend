@@ -7,7 +7,7 @@ function Header() {
   };
   return (
     <nav>
-      <Link to="/">Home</Link>
+      <Link to="/">Invoice Maker</Link>
       <NavLink
         to="/register"
         style={({ isActive }) => (isActive ? activeStyle : undefined)}

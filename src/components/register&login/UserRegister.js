@@ -3,12 +3,16 @@ import React from "react";
 function UserReigster(props) {
   const compName = [];
   for (let comp of props.company) {
-    compName.push(comp.companyname);
+    compName.push(comp.companyname.toLowerCase());
   }
+
+  // if (props.handleChange === compName.includes(props.handleChange)) {
+  //   return compName.includes(props.handleChange);
+  // }
   return (
     <>
       <h1 id="tag">Reigster</h1>
-      <form onSubmit={props.registerCompany}>
+      <form onSubmit={props.registerUser}>
         <div className="field" id="register">
           <label className="label" htmlFor="name">
             Name
@@ -62,13 +66,14 @@ function UserReigster(props) {
               placeholder="Company Name"
               name="company"
               id="company"
-              onChange={props.handleChange}
+              // onChange={props.handleChange}
             />
-            <ul>
+            {/* <ul>
               {compName.map((comp, i) => {
+                // console.log(comp.match(/[a-z]/g), "comp");
                 return <p key={i}>{comp}</p>;
               })}
-            </ul>
+            </ul> */}
           </div>
         </div>
         <div className="buttons" id="register">
