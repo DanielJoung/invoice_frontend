@@ -1,14 +1,15 @@
-import React from "react";
+import React, { useState } from "react";
 
 function UserReigster(props) {
-  const compName = [];
-  for (let comp of props.company) {
-    compName.push(comp.companyname.toLowerCase());
-  }
-
+  const [word, setWord] = useState("");
   // if (props.handleChange === compName.includes(props.handleChange)) {
   //   return compName.includes(props.handleChange);
   // }
+
+  const handleChange = (e) => {
+    setWord(e.target.value);
+  };
+
   return (
     <>
       <h1 id="tag">Reigster</h1>
@@ -66,14 +67,17 @@ function UserReigster(props) {
               placeholder="Company Name"
               name="company"
               id="company"
-              // onChange={props.handleChange}
+              onChange={handleChange}
             />
-            {/* <ul>
-              {compName.map((comp, i) => {
-                // console.log(comp.match(/[a-z]/g), "comp");
-                return <p key={i}>{comp}</p>;
-              })}
-            </ul> */}
+            <ul>
+              {word === "" ? (
+                <li></li>
+              ) : (
+                props.company
+                  .filter((comp) => comp.companyname.includes(word))
+                  .map((comp) => <li key={comp.id}>{comp.companyname}</li>)
+              )}
+            </ul>
           </div>
         </div>
         <div className="buttons" id="register">

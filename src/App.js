@@ -38,15 +38,6 @@ function App() {
     }
   };
 
-  const handleChange = (e) => {
-    e.preventDefault();
-    // console.log(e.target.value);
-
-    setCompany(
-      company.filter((comp) => comp["companyname"].includes(e.target.value))
-    );
-  };
-
   const loginUser = async (e) => {
     e.preventDefault();
     try {
@@ -176,11 +167,7 @@ function App() {
         <Route
           path="/user/register"
           element={
-            <UserReigster
-              registerUser={registerUser}
-              handleChange={handleChange}
-              company={company}
-            />
+            <UserReigster registerUser={registerUser} company={company} />
           }
         />
         <Route
