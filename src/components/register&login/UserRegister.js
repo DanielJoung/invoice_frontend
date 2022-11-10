@@ -75,7 +75,20 @@ function UserReigster(props) {
               ) : (
                 props.company
                   .filter((comp) => comp.companyname.includes(word))
-                  .map((comp) => <li key={comp.id}>{comp.companyname}</li>)
+                  .map((comp) => (
+                    <a
+                      id="compName"
+                      key={comp.id}
+                      onClick={(e) => {
+                        e.preventDefault();
+                        const li =
+                          document.querySelector("#compName").innerHTML;
+                        document.querySelector("#company").value = li;
+                      }}
+                    >
+                      {comp.companyname}
+                    </a>
+                  ))
               )}
             </ul>
           </div>
