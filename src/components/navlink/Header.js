@@ -20,6 +20,8 @@ function Header() {
       >
         Login
       </NavLink>
+      <NavLink to="/create/product">Create Product</NavLink>
+      <NavLink to="/show/products">My Product</NavLink>
     </nav>
   );
 }

@@ -7,6 +7,8 @@ import CompanyLogin from "./components/register&login/CompanyLogin";
 import CompanyReigster from "./components/register&login/CompanyRegister";
 import UserReigster from "./components/register&login/UserRegister";
 import UserLogin from "./components/register&login/UserLogin";
+import CreateProduct from "./components/product/CreateProduct";
+import ShowProduct from "./components/product/ShowProduct";
 import "bulma/css/bulma.min.css";
 import { useState, useEffect } from "react";
 import { Routes, Route, useNavigate } from "react-router-dom";
@@ -14,7 +16,8 @@ import { Routes, Route, useNavigate } from "react-router-dom";
 function App() {
   const navigate = useNavigate();
   const [company, setCompany] = useState([]);
-
+  const [products, setProducts] = useState([]);
+  // console.log(products);
   const getCompany = async () => {
     try {
       const res = await fetch(
@@ -22,20 +25,30 @@ function App() {
         {
           credentials: "include",
         }
-      )
-        .then((res) => {
-          if (res.status === 200) {
-            return res.json();
-          } else {
-            return [];
-          }
-        })
-        .then((data) => {
-          setCompany(data.data);
-        });
+      );
+      const data = await res.json();
+      setCompany(data.data);
+      // console.log(data, "company");
     } catch (err) {
       console.log(err);
     }
+  };
+
+  const getProduct = async () => {
+    try {
+      const res = await fetch(
+        process.env.REACT_APP_BACKEND_URL + "/products/all_item",
+        {
+          credentials: "include",
+        }
+      );
+      const data = await res.json();
+      setProducts(data.data);
+      // console.log(data.data);
+    } catch (err) {
+      console.log(err);
+    }
+    // console.log(products);
   };
 
   const loginUser = async (e) => {
@@ -57,8 +70,9 @@ function App() {
       );
       console.log(res.status);
       if (res.status === 200) {
-        console.log("login");
+        // console.log("login");
         navigate("/");
+        getProduct();
       }
     } catch (err) {
       console.log(err);
@@ -112,9 +126,12 @@ function App() {
           credentials: "include",
         }
       );
-      console.log(res.status);
+      // console.log(res.status);
+      const data = await res.json();
       if (res.status === 200) {
-        console.log("login");
+        // console.log("login", data.data.company);
+        localStorage.setItem("companyname", data.data.companyname);
+        getProduct();
         navigate("/");
       }
     } catch (err) {
@@ -151,8 +168,17 @@ function App() {
     }
   };
 
+  const createProduct = (product) => {
+    const createProducts = [...products, product];
+    // console.log(createDog);
+    setProducts(createProducts);
+    // console.log(setProducts(createDog));
+    // console.log(products);
+  };
+
   useEffect(() => {
     getCompany();
+    getProduct();
   }, []);
 
   return (
@@ -160,6 +186,7 @@ function App() {
       <Header />
 
       <Routes>
+        {/* Register */}
         <Route
           path="/company/register"
           element={<CompanyReigster registerCompany={registerCompany} />}
@@ -170,6 +197,7 @@ function App() {
             <UserReigster registerUser={registerUser} company={company} />
           }
         />
+        {/* Login */}
         <Route
           path="/company/login"
           element={<CompanyLogin loginCompany={loginCompany} />}
@@ -181,6 +209,24 @@ function App() {
         <Route path="/register" element={<Register />} />
         <Route path="/login" element={<Login />} />
         <Route path="/" element={<Home />} />
+
+        {/* Product */}
+        <Route
+          path="/create/product"
+          element={
+            <CreateProduct
+              createProduct={createProduct}
+              products={products}
+              // handleChange={handleChange}
+              company={company}
+              setProducts={setProducts}
+            />
+          }
+        />
+        <Route
+          path="/show/products"
+          element={<ShowProduct products={products} />}
+        />
       </Routes>
     </div>
   );
