@@ -9,6 +9,7 @@ import UserReigster from "./components/register&login/UserRegister";
 import UserLogin from "./components/register&login/UserLogin";
 import CreateProduct from "./components/product/CreateProduct";
 import ShowProduct from "./components/product/ShowProduct";
+
 import "bulma/css/bulma.min.css";
 import { useState, useEffect } from "react";
 import { Routes, Route, useNavigate } from "react-router-dom";
@@ -17,17 +18,34 @@ function App() {
   const navigate = useNavigate();
   const [company, setCompany] = useState([]);
   const [products, setProducts] = useState([]);
-  // console.log(products);
+  const [users, setUsers] = useState([]);
+
   const getCompany = async () => {
     try {
       const res = await fetch(
-        process.env.REACT_APP_BACKEND_URL + "/company/search",
+        process.env.REACT_APP_BACKEND_URL + "/company/search_company",
         {
           credentials: "include",
         }
       );
       const data = await res.json();
       setCompany(data.data);
+      // console.log(data, "company");
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
+  const getUser = async () => {
+    try {
+      const res = await fetch(
+        process.env.REACT_APP_BACKEND_URL + "/user/search_user",
+        {
+          credentials: "include",
+        }
+      );
+      const data = await res.json();
+      setUsers(data.data);
       // console.log(data, "company");
     } catch (err) {
       console.log(err);
@@ -68,11 +86,13 @@ function App() {
           credentials: "include",
         }
       );
-      console.log(res.status);
+
+      const data = await res.json();
       if (res.status === 200) {
-        // console.log("login");
+        localStorage.setItem("username", data.data.username);
+        console.log(data);
+        // getProduct();
         navigate("/");
-        getProduct();
       }
     } catch (err) {
       console.log(err);
@@ -126,11 +146,11 @@ function App() {
           credentials: "include",
         }
       );
-      // console.log(res.status);
       const data = await res.json();
       if (res.status === 200) {
-        // console.log("login", data.data.company);
         localStorage.setItem("companyname", data.data.companyname);
+
+        console.log(data);
         getProduct();
         navigate("/");
       }
@@ -170,13 +190,13 @@ function App() {
 
   const createProduct = (product) => {
     const createProducts = [...products, product];
-    // console.log(createDog);
+
     setProducts(createProducts);
-    // console.log(setProducts(createDog));
-    // console.log(products);
+    console.log(createProducts);
   };
 
   useEffect(() => {
+    getUser();
     getCompany();
     getProduct();
   }, []);
@@ -184,8 +204,8 @@ function App() {
   return (
     <div>
       <Header />
-
       <Routes>
+        <Route path="/" element={<Home />} />
         {/* Register */}
         <Route
           path="/company/register"
@@ -197,6 +217,7 @@ function App() {
             <UserReigster registerUser={registerUser} company={company} />
           }
         />
+
         {/* Login */}
         <Route
           path="/company/login"
@@ -204,15 +225,15 @@ function App() {
         />
         <Route
           path="/user/login"
-          element={<UserLogin loginCompany={loginUser} />}
+          element={<UserLogin loginUser={loginUser} />}
         />
+
         <Route path="/register" element={<Register />} />
         <Route path="/login" element={<Login />} />
-        <Route path="/" element={<Home />} />
 
-        {/* Product */}
+        {/* product */}
         <Route
-          path="/create/product"
+          path="/products/create"
           element={
             <CreateProduct
               createProduct={createProduct}

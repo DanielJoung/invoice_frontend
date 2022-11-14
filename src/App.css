@@ -10,6 +10,10 @@ nav {
   font-size: 1.5em;  
 }
 
+#header > a {
+  text-decoration: none;
+  padding: 10vw;
+}
 nav > a {
   text-decoration: none;
   padding: 0.5vw;

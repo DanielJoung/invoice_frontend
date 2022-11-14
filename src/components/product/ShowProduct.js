@@ -15,6 +15,7 @@ function ShowProduct(props) {
       <tbody id="tbody">
         {props.products.map((product, i) => {
           // console.log(product);
+
           return (
             <tr key={product.id}>
               <td>{product.productname}</td>

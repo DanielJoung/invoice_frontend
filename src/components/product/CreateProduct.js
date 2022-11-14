@@ -8,41 +8,8 @@ function CreateProduct(props) {
     discount: "",
     company: localStorage.getItem("companyname"),
   });
-  // console.log(props.products.company);
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    try {
-      const res = await fetch(
-        process.env.REACT_APP_BACKEND_URL + "/products/create",
-        {
-          method: "POST",
-          body: JSON.stringify({
-            productname: products.productname,
-            price: products.price,
-            quantity: products.quantity,
-            discount: products.discount,
-            company: localStorage.getItem("companyname"),
-          }),
-          headers: {
-            "Content-Type": "application/json",
-          },
-        }
-      );
-      const data = await res.json();
-      props.CreateProduct(data.data);
-      setProducts({
-        productname: "",
-        price: "",
-        quantity: "",
-        discount: "",
-      });
-      console.log(data);
-      // console.log(res);
-    } catch (err) {
-      console.log(err);
-    }
-  };
+  console.log(products);
 
   const handleChange = (e) => {
     setProducts({
@@ -50,44 +17,115 @@ function CreateProduct(props) {
     });
   };
 
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      const resJson = await fetch(
+        process.env.REACT_APP_BACKEND_URL + "/products/create",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            productname: products.productname,
+            price: products.price,
+            quantity: products.quantity,
+            discount: products.discount,
+            company: products.company,
+          }),
+          credentials: "include",
+        }
+      );
+      const data = await resJson.json();
+
+      props.createProduct(data);
+
+      setProducts({
+        productname: "",
+        price: "",
+        quantity: "",
+        discount: "",
+        company: localStorage.getItem("companyname"),
+      });
+
+      console.log(data);
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
   return (
     <>
-      <h1>Create Product</h1>
-
+      <h1 id="tag">Create Product</h1>
       <form onSubmit={handleSubmit}>
-        <table>
-          <thead>
-            <tr>
-              <td>Product</td>
-              <td>Price</td>
-              <td>Quantity</td>
-              <td>Discount</td>
-              <td>Submit</td>
-            </tr>
-          </thead>
+        <div className="field" id="register">
+          <label className="label" htmlFor="name">
+            Product Name
+          </label>
+          <div className="control has-icons-left">
+            <input
+              className="input"
+              type="text"
+              placeholder="Product Name"
+              name="productname"
+              id="productname"
+              onChange={handleChange}
+            />
+          </div>
+        </div>
+        <div className="field" id="register">
+          <label className="label" htmlFor="name">
+            Price
+          </label>
+          <div className="control has-icons-left">
+            <input
+              className="input"
+              type="number"
+              placeholder="Price"
+              name="price"
+              id="price"
+              onChange={handleChange}
+            />
+          </div>
+        </div>
+        <div className="field" id="register">
+          <label className="label" htmlFor="name">
+            Quantity
+          </label>
+          <div className="control has-icons-left">
+            <input
+              className="input"
+              type="number"
+              placeholder="Quantity"
+              name="quantity"
+              id="quantity"
+              onChange={handleChange}
+            />
+          </div>
+        </div>
+        <div className="field" id="register">
+          <label className="label" htmlFor="name">
+            Discount
+          </label>
+          <div className="control has-icons-left">
+            <input
+              className="input"
+              type="number"
+              placeholder="Discount"
+              name="discount"
+              id="discount"
+              onChange={handleChange}
+            />
+          </div>
+        </div>
 
-          <tbody id="tbody">
-            <tr>
-              <td>
-                <input type="text" id="productname" onChange={handleChange} />
-              </td>
-              <td>
-                <input type="number" id="price" onChange={handleChange} />
-              </td>
-              <td>
-                <input type="number" id="quantity" onChange={handleChange} />
-              </td>
-              <td>
-                <input type="number" id="discount" onChange={handleChange} />
-              </td>
-              <td>
-                <button className="is-primary is-small  button">Submit</button>
-              </td>
-            </tr>
-          </tbody>
-        </table>
+        <div className="buttons" id="register">
+          <button className="is-primary is-rounded is-fullwidth button">
+            Create
+          </button>
+        </div>
       </form>
-      <div className="buttons" id="register"></div>
     </>
   );
 }
