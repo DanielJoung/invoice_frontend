@@ -9,7 +9,7 @@ import UserReigster from "./components/register&login/UserRegister";
 import UserLogin from "./components/register&login/UserLogin";
 import CreateProduct from "./components/product/CreateProduct";
 import ShowProduct from "./components/product/ShowProduct";
-
+import EditProduct from "./components/product/EditProduct";
 import "bulma/css/bulma.min.css";
 import { useState, useEffect } from "react";
 import { Routes, Route, useNavigate } from "react-router-dom";
@@ -19,6 +19,13 @@ function App() {
   const [company, setCompany] = useState([]);
   const [products, setProducts] = useState([]);
   const [users, setUsers] = useState([]);
+  const [currentId, setCurrentId] = useState("");
+
+  const setId = (id) => {
+    setCurrentId({
+      currentId: id,
+    });
+  };
 
   const getCompany = async () => {
     try {
@@ -195,6 +202,40 @@ function App() {
     console.log(createProducts);
   };
 
+  const deleteProduct = (id) => {
+    fetch(process.env.REACT_APP_BACKEND_URL + "/products/" + id, {
+      method: "DELETE",
+    })
+      .then((res) => {
+        const findIndex = products.findIndex((product) => product.id === id);
+        const copyProduct = [...products];
+        copyProduct.splice(findIndex, 1);
+        if (res.status === 200) {
+          setProducts(products);
+        }
+      })
+      .then((data) => {
+        console.log(data);
+      });
+  };
+
+  const updateProduct = (product) => {
+    fetch(process.env.REACT_APP_BACKEND_URL + "/products/" + currentId, {
+      method: "PUT",
+      body: JSON.stringify(product),
+      headers: { "Content-Type": "application/json" },
+    })
+      .then(async (res) => {
+        if (res.status === 200) {
+          return await res.json();
+        }
+      })
+      .then((data) => {
+        console.log(data, "update data");
+        navigate("/");
+      });
+  };
+
   useEffect(() => {
     getUser();
     getCompany();
@@ -246,7 +287,25 @@ function App() {
         />
         <Route
           path="/show/products"
-          element={<ShowProduct products={products} />}
+          element={
+            <ShowProduct
+              products={products}
+              deleteProduct={deleteProduct}
+              currentId={currentId}
+              navigate={navigate}
+            />
+          }
+        />
+
+        <Route
+          path="/edit/:id"
+          element={
+            <EditProduct
+              products={products}
+              updateProduct={updateProduct}
+              currentId={currentId}
+            />
+          }
         />
       </Routes>
     </div>

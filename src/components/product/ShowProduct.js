@@ -1,6 +1,24 @@
-import React from "react";
+import React, { useEffect } from "react";
 
 function ShowProduct(props) {
+  const getProduct = () => {
+    fetch(process.env.REACT_APP_BACKEND_URL + "/products/" + props.currentId)
+      .then(async (res) => {
+        return await res.json();
+      })
+      .then((data) => {
+        console.log(data.data);
+      });
+  };
+
+  const handleMovePage = () => {
+    props.navigate("/edit/" + props.products.id);
+  };
+
+  useEffect(() => {
+    getProduct();
+  }, []);
+
   return (
     <table>
       <thead>
@@ -23,6 +41,28 @@ function ShowProduct(props) {
               <td>{product.quantity}</td>
               <td>{product.discount}</td>
               {/* <td>{product.company.companyname}</td> */}
+              <td>
+                <form>
+                  <input
+                    className="is-primary is-small  button"
+                    type="submit"
+                    value="edit"
+                    onClick={handleMovePage}
+                  />
+                </form>
+              </td>
+              <td>
+                <form>
+                  <input
+                    className="is-danger is-small  button"
+                    type="submit"
+                    value="delete"
+                    onClick={() => {
+                      props.deleteProduct(product.id);
+                    }}
+                  />
+                </form>
+              </td>
             </tr>
           );
         })}

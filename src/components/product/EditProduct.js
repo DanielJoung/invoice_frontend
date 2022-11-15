@@ -1,64 +1,37 @@
-import { useState, useEffect } from "react";
+import React, { useState } from "react";
 
-function CreateProduct(props) {
-  const [products, setProducts] = useState({
-    productname: "",
-    price: "",
-    quantity: "",
-    discount: "",
-    company: localStorage.getItem("companyname"),
+function EditProduct(props) {
+  const product = props.products.find((product) => {
+    return product.id === props.currentId;
+  });
+  console.log(product);
+
+  const [editProduct, setEditProduct] = useState({
+    productname: product.productname,
+    price: product.price,
+    quantity: product.quantity,
+    discount: product.discount,
   });
 
-  console.log(products);
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    const edit = {
+      productname: editProduct.productname,
+      price: editProduct.price,
+      quantity: editProduct.quantity,
+      discount: editProduct.discount,
+    };
+    props.updateProduct(edit);
+  };
 
   const handleChange = (e) => {
-    setProducts({
+    setEditProduct({
       [e.target.id]: e.target.value,
     });
   };
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    try {
-      const resJson = await fetch(
-        process.env.REACT_APP_BACKEND_URL + "/products/create",
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            productname: products.productname,
-            price: products.price,
-            quantity: products.quantity,
-            discount: products.discount,
-            company: products.company,
-          }),
-          credentials: "include",
-        }
-      );
-      const data = await resJson.json();
-      if (resJson.status === 201) {
-        props.createProduct(data);
-      }
-
-      setProducts({
-        productname: "",
-        price: "",
-        quantity: "",
-        discount: "",
-        company: localStorage.getItem("companyname"),
-      });
-
-      console.log(data);
-    } catch (err) {
-      console.log(err);
-    }
-  };
-
   return (
     <>
-      <h1 id="tag">Create Product</h1>
       <form onSubmit={handleSubmit}>
         <div className="field" id="register">
           <label className="label" htmlFor="name">
@@ -68,7 +41,7 @@ function CreateProduct(props) {
             <input
               className="input"
               type="text"
-              placeholder="Product Name"
+              value={editProduct.productname}
               name="productname"
               id="productname"
               onChange={handleChange}
@@ -83,7 +56,7 @@ function CreateProduct(props) {
             <input
               className="input"
               type="number"
-              placeholder="Price"
+              value={editProduct.price}
               name="price"
               id="price"
               onChange={handleChange}
@@ -98,7 +71,7 @@ function CreateProduct(props) {
             <input
               className="input"
               type="number"
-              placeholder="Quantity"
+              value={editProduct.quantity}
               name="quantity"
               id="quantity"
               onChange={handleChange}
@@ -113,7 +86,7 @@ function CreateProduct(props) {
             <input
               className="input"
               type="number"
-              placeholder="Discount"
+              value={editProduct.discount}
               name="discount"
               id="discount"
               onChange={handleChange}
@@ -123,7 +96,7 @@ function CreateProduct(props) {
 
         <div className="buttons" id="register">
           <button className="is-primary is-rounded is-fullwidth button">
-            Create
+            Edit
           </button>
         </div>
       </form>
@@ -131,4 +104,4 @@ function CreateProduct(props) {
   );
 }
 
-export default CreateProduct;
+export default EditProduct;
