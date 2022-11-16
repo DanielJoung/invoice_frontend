@@ -10,6 +10,7 @@ import UserLogin from "./components/register&login/UserLogin";
 import CreateProduct from "./components/product/CreateProduct";
 import ShowProduct from "./components/product/ShowProduct";
 import EditProduct from "./components/product/EditProduct";
+import Create from "./components/navlink/Create";
 import "bulma/css/bulma.min.css";
 import { useState, useEffect } from "react";
 import { Routes, Route, useNavigate } from "react-router-dom";
@@ -22,9 +23,7 @@ function App() {
   const [currentId, setCurrentId] = useState("");
 
   const setId = (id) => {
-    setCurrentId({
-      currentId: id,
-    });
+    setCurrentId(id);
   };
 
   const getCompany = async () => {
@@ -232,7 +231,7 @@ function App() {
       })
       .then((data) => {
         console.log(data, "update data");
-        navigate("/");
+        navigate("/show/products");
       });
   };
 
@@ -293,6 +292,7 @@ function App() {
               deleteProduct={deleteProduct}
               currentId={currentId}
               navigate={navigate}
+              setId={setId}
             />
           }
         />
@@ -304,9 +304,11 @@ function App() {
               products={products}
               updateProduct={updateProduct}
               currentId={currentId}
+              setId={setId}
             />
           }
         />
+        <Route path="/create" element={<Create />} />
       </Routes>
     </div>
   );

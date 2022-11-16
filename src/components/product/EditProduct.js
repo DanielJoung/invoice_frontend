@@ -1,11 +1,11 @@
 import React, { useState } from "react";
 
 function EditProduct(props) {
-  const product = props.products.find((product) => {
-    return product.id === props.currentId;
+  const product = props.products.find((prod) => {
+    return prod.id === props.currentId;
   });
-  console.log(product);
 
+  console.log(props.currentId);
   const [editProduct, setEditProduct] = useState({
     productname: product.productname,
     price: product.price,
@@ -24,9 +24,13 @@ function EditProduct(props) {
     props.updateProduct(edit);
   };
 
-  const handleChange = (e) => {
-    setEditProduct({
-      [e.target.id]: e.target.value,
+  const handleChange = (event) => {
+    const { id, value } = event.target;
+    setEditProduct((prevState) => {
+      return {
+        ...prevState,
+        [id]: value,
+      };
     });
   };
 
@@ -44,7 +48,7 @@ function EditProduct(props) {
               value={editProduct.productname}
               name="productname"
               id="productname"
-              onChange={handleChange}
+              onChange={(e) => handleChange(e)}
             />
           </div>
         </div>
@@ -59,7 +63,7 @@ function EditProduct(props) {
               value={editProduct.price}
               name="price"
               id="price"
-              onChange={handleChange}
+              onChange={(e) => handleChange(e)}
             />
           </div>
         </div>
@@ -74,7 +78,7 @@ function EditProduct(props) {
               value={editProduct.quantity}
               name="quantity"
               id="quantity"
-              onChange={handleChange}
+              onChange={(e) => handleChange(e)}
             />
           </div>
         </div>
@@ -89,7 +93,7 @@ function EditProduct(props) {
               value={editProduct.discount}
               name="discount"
               id="discount"
-              onChange={handleChange}
+              onChange={(e) => handleChange(e)}
             />
           </div>
         </div>

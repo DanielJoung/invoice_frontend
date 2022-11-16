@@ -2,12 +2,16 @@ import React, { useState } from "react";
 
 function UserReigster(props) {
   const [word, setWord] = useState("");
-  // if (props.handleChange === compName.includes(props.handleChange)) {
-  //   return compName.includes(props.handleChange);
-  // }
 
   const handleChange = (e) => {
     setWord(e.target.value);
+  };
+
+  const searchBar = (e) => {
+    e.preventDefault();
+    const li = document.querySelector("#compName").innerHTML;
+    document.querySelector("#company").value = li;
+    console.log(li);
   };
 
   return (
@@ -75,18 +79,11 @@ function UserReigster(props) {
               ) : (
                 props.company
                   .filter((comp) => comp.companyname.includes(word))
-                  .map((comp) => (
-                    <a
-                      id="compName"
-                      key={comp.id}
-                      onClick={(e) => {
-                        e.preventDefault();
-                        const li =
-                          document.querySelector("#compName").innerHTML;
-                        document.querySelector("#company").value = li;
-                      }}
-                    >
-                      {comp.companyname}
+                  .map((comp, key) => (
+                    <a key={comp.id}>
+                      <li id="compName" onClick={searchBar}>
+                        {comp.companyname}
+                      </li>
                     </a>
                   ))
               )}

@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 
 function CreateProduct(props) {
-  const [products, setProducts] = useState({
+  const [product, setProduct] = useState({
     productname: "",
     price: "",
     quantity: "",
@@ -9,16 +9,20 @@ function CreateProduct(props) {
     company: localStorage.getItem("companyname"),
   });
 
-  console.log(products);
-
-  const handleChange = (e) => {
-    setProducts({
-      [e.target.id]: e.target.value,
+  // console.log(product);
+  const handleChange = (event) => {
+    const { id, value } = event.target;
+    setProduct((prevState) => {
+      return {
+        ...prevState,
+        [id]: value,
+      };
     });
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    console.log(product);
     try {
       const resJson = await fetch(
         process.env.REACT_APP_BACKEND_URL + "/products/create",
@@ -28,11 +32,11 @@ function CreateProduct(props) {
             "Content-Type": "application/json",
           },
           body: JSON.stringify({
-            productname: products.productname,
-            price: products.price,
-            quantity: products.quantity,
-            discount: products.discount,
-            company: products.company,
+            productname: product.productname,
+            price: product.price,
+            quantity: product.quantity,
+            discount: product.discount,
+            company: product.company,
           }),
           credentials: "include",
         }
@@ -40,9 +44,10 @@ function CreateProduct(props) {
       const data = await resJson.json();
       if (resJson.status === 201) {
         props.createProduct(data);
+        console.log(data);
       }
 
-      setProducts({
+      setProduct({
         productname: "",
         price: "",
         quantity: "",
@@ -69,7 +74,8 @@ function CreateProduct(props) {
               className="input"
               type="text"
               placeholder="Product Name"
-              name="productname"
+              value={product.productname}
+              // name="productname"
               id="productname"
               onChange={handleChange}
             />
@@ -84,9 +90,10 @@ function CreateProduct(props) {
               className="input"
               type="number"
               placeholder="Price"
-              name="price"
+              // name="price"
               id="price"
               onChange={handleChange}
+              value={product.price}
             />
           </div>
         </div>
@@ -99,9 +106,10 @@ function CreateProduct(props) {
               className="input"
               type="number"
               placeholder="Quantity"
-              name="quantity"
+              // name="quantity"
               id="quantity"
               onChange={handleChange}
+              value={product.quantity}
             />
           </div>
         </div>
@@ -114,9 +122,10 @@ function CreateProduct(props) {
               className="input"
               type="number"
               placeholder="Discount"
-              name="discount"
+              // name="discount"
               id="discount"
               onChange={handleChange}
+              value={product.discount}
             />
           </div>
         </div>
