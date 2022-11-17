@@ -126,6 +126,7 @@ function App() {
       const data = await res.json();
       if (res.status === 200) {
         localStorage.setItem("username", data.data.username);
+        localStorage.setItem("usercompname", data.data.company.companyname);
         console.log(data);
         // getProduct();
         navigate("/");

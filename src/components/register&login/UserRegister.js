@@ -9,9 +9,10 @@ function UserReigster(props) {
 
   const searchBar = (e) => {
     e.preventDefault();
-    const li = document.querySelector("#compName").innerHTML;
-    document.querySelector("#company").value = li;
-    console.log(li);
+    // const li = document.querySelector("#compName").innerText;
+    const company = document.querySelector("#company");
+    company.value = e.target.innerText;
+    console.log(e.target.innerText);
   };
 
   return (
@@ -80,11 +81,11 @@ function UserReigster(props) {
                 props.company
                   .filter((comp) => comp.companyname.includes(word))
                   .map((comp, key) => (
-                    <a key={comp.id}>
-                      <li id="compName" onClick={searchBar}>
+                    <li key={comp.id}>
+                      <a id="compName" onClick={searchBar} href={() => false}>
                         {comp.companyname}
-                      </li>
-                    </a>
+                      </a>
+                    </li>
                   ))
               )}
             </ul>

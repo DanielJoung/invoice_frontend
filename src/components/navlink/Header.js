@@ -6,42 +6,49 @@ function Header() {
   let activeStyle = {
     color: "white",
   };
+
+  const companyname = localStorage.getItem("companyname");
+  const username = localStorage.getItem("username");
+  const usercompname = localStorage.getItem("usercompname");
   return (
-    <nav>
-      <Link to="/">Invoice Maker</Link>
+    <>
+      <nav>
+        <Link to="/">Invoice Maker</Link>
 
-      {localStorage.getItem("companyname") ||
-      localStorage.getItem("username") ? (
-        <Logout />
-      ) : (
-        <div id="header">
-          <NavLink
-            to="/login"
-            style={({ isActive }) => (isActive ? activeStyle : undefined)}
-          >
-            Login
-          </NavLink>
-          <NavLink
-            to="/register"
-            style={({ isActive }) => (isActive ? activeStyle : undefined)}
-          >
-            Register
-          </NavLink>
-        </div>
-      )}
+        {companyname || username ? (
+          <Logout />
+        ) : (
+          <div id="header">
+            <NavLink
+              to="/login"
+              style={({ isActive }) => (isActive ? activeStyle : undefined)}
+            >
+              Login
+            </NavLink>
+            <NavLink
+              to="/register"
+              style={({ isActive }) => (isActive ? activeStyle : undefined)}
+            >
+              Register
+            </NavLink>
+          </div>
+        )}
 
-      {localStorage.getItem("companyname") ? (
-        <NavLink to="/create">Create</NavLink>
-      ) : (
-        ""
-      )}
+        {companyname ? <NavLink to="/create">Create</NavLink> : ""}
 
-      {localStorage.getItem("companyname") ? (
-        <NavLink to="/show">My Info</NavLink>
-      ) : (
-        ""
-      )}
-    </nav>
+        {companyname ? <NavLink to="/show">Company Info</NavLink> : ""}
+        {!companyname ? "" : <p>welcome {companyname}</p>}
+        {!username ? (
+          ""
+        ) : (
+          <p>
+            <span>{usercompname} company</span>
+            <br></br>
+            <span>welcome {username}</span>
+          </p>
+        )}
+      </nav>
+    </>
   );
 }
 
