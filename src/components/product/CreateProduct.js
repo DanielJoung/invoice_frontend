@@ -10,8 +10,8 @@ function CreateProduct(props) {
   });
 
   // console.log(product);
-  const handleChange = (event) => {
-    const { id, value } = event.target;
+  const handleChange = (e) => {
+    const { id, value } = e.target;
     setProduct((prevState) => {
       return {
         ...prevState,
@@ -54,8 +54,6 @@ function CreateProduct(props) {
         discount: "",
         company: localStorage.getItem("companyname"),
       });
-
-      console.log(data);
     } catch (err) {
       console.log(err);
     }

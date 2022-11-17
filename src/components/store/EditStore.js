@@ -1,31 +1,30 @@
 import React, { useState } from "react";
 
-function EditProduct(props) {
-  const product = props.products.find((prod) => {
-    return prod.id === props.currentId;
+function EditStore(props) {
+  const store = props.stores.find((store) => {
+    return store.id === props.currentStoreId;
   });
+  // console.log(props.stores);
 
-  const [editProduct, setEditProduct] = useState({
-    productname: product.productname,
-    price: product.price,
-    quantity: product.quantity,
-    discount: product.discount,
+  const [editStore, setEditStore] = useState({
+    storename: store.storename,
+    storephone: store.storephone,
+    address: store.address,
   });
 
   const handleSubmit = (e) => {
     e.preventDefault();
     const edit = {
-      productname: editProduct.productname,
-      price: editProduct.price,
-      quantity: editProduct.quantity,
-      discount: editProduct.discount,
+      storename: editStore.storename,
+      storephone: editStore.storephone,
+      address: editStore.address,
     };
-    props.updateProduct(edit);
+    props.updateStore(edit);
   };
 
   const handleChange = (e) => {
     const { id, value } = e.target;
-    setEditProduct((prevState) => {
+    setEditStore((prevState) => {
       return {
         ...prevState,
         [id]: value,
@@ -38,60 +37,42 @@ function EditProduct(props) {
       <form onSubmit={handleSubmit}>
         <div className="field" id="register">
           <label className="label" htmlFor="name">
-            Product Name
+            Store Name
           </label>
           <div className="control has-icons-left">
             <input
               className="input"
               type="text"
-              value={editProduct.productname}
-              name="productname"
-              id="productname"
+              value={editStore.storename}
+              id="storename"
               onChange={(e) => handleChange(e)}
             />
           </div>
         </div>
         <div className="field" id="register">
           <label className="label" htmlFor="name">
-            Price
+            Store Phone
           </label>
           <div className="control has-icons-left">
             <input
               className="input"
-              type="number"
-              value={editProduct.price}
-              name="price"
-              id="price"
+              type="text"
+              value={editStore.storephone}
+              id="storephone"
               onChange={(e) => handleChange(e)}
             />
           </div>
         </div>
         <div className="field" id="register">
           <label className="label" htmlFor="name">
-            Quantity
+            Address
           </label>
           <div className="control has-icons-left">
             <input
               className="input"
-              type="number"
-              value={editProduct.quantity}
-              name="quantity"
-              id="quantity"
-              onChange={(e) => handleChange(e)}
-            />
-          </div>
-        </div>
-        <div className="field" id="register">
-          <label className="label" htmlFor="name">
-            Discount
-          </label>
-          <div className="control has-icons-left">
-            <input
-              className="input"
-              type="number"
-              value={editProduct.discount}
-              name="discount"
-              id="discount"
+              type="text"
+              value={editStore.address}
+              id="address"
               onChange={(e) => handleChange(e)}
             />
           </div>
@@ -107,4 +88,4 @@ function EditProduct(props) {
   );
 }
 
-export default EditProduct;
+export default EditStore;

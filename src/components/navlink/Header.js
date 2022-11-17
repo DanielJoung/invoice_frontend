@@ -37,7 +37,7 @@ function Header() {
       )}
 
       {localStorage.getItem("companyname") ? (
-        <NavLink to="/show/products">My Product</NavLink>
+        <NavLink to="/show">My Info</NavLink>
       ) : (
         ""
       )}

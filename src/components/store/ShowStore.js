@@ -1,36 +1,35 @@
-function ShowProduct(props) {
+function ShowStore(props) {
   const handleEdit = (id) => {
-    console.log(id);
-    props.setId(id);
-    props.navigate("/edit/product/" + id);
+    // console.log(id);
+    props.setStoreId(id);
+    props.navigate("/edit/store/" + id);
   };
-
   return (
     <table>
       <thead>
         <tr>
-          <td>Product</td>
-          <td>Price</td>
-          <td>Quantity</td>
-          <td>Discount</td>
+          <td>Store Name</td>
+          <td>Store Phone</td>
+          <td>Address</td>
           <td>Edit</td>
           <td>Delete</td>
+
           {/* <td>Company</td> */}
         </tr>
       </thead>
       <tbody id="tbody">
-        {props.products.map((product, i) => {
-          // console.log(product.id);
+        {props.stores.map((store, i) => {
+          // console.log(store);
 
           return (
-            <tr key={product.id} id="productId">
-              <td>{product.productname}</td>
-              <td>{product.price}</td>
-              <td>{product.quantity}</td>
-              <td>{product.discount}</td>
+            <tr key={store.id} id="productId">
+              <td>{store.storename}</td>
+              <td>{store.storephone}</td>
+              <td>{store.address}</td>
+
               {/* <td>{product.company.companyname}</td> */}
               <td>
-                <button value="edit" onClick={() => handleEdit(product.id)}>
+                <button value="edit" onClick={() => handleEdit(store.id)}>
                   Edit
                 </button>
               </td>
@@ -40,7 +39,7 @@ function ShowProduct(props) {
                     type="submit"
                     value="delete"
                     onClick={() => {
-                      props.deleteProduct(product.id);
+                      props.deleteStore(store.id);
                     }}
                   />
                 </form>
@@ -53,4 +52,4 @@ function ShowProduct(props) {
   );
 }
 
-export default ShowProduct;
+export default ShowStore;

@@ -1,16 +1,23 @@
 import "./App.css";
 import Home from "./components/Home";
 import Header from "./components/navlink/Header";
+import Create from "./components/navlink/Create";
+import Show from "./components/navlink/Show";
+// login, register
 import Register from "./components/navlink/Register";
 import Login from "./components/navlink/Login";
 import CompanyLogin from "./components/register&login/CompanyLogin";
 import CompanyReigster from "./components/register&login/CompanyRegister";
 import UserReigster from "./components/register&login/UserRegister";
 import UserLogin from "./components/register&login/UserLogin";
+// product
 import CreateProduct from "./components/product/CreateProduct";
 import ShowProduct from "./components/product/ShowProduct";
 import EditProduct from "./components/product/EditProduct";
-import Create from "./components/navlink/Create";
+//store
+import CreateStore from "./components/store/CreateStore";
+import EditStore from "./components/store/EditStore";
+import ShowStore from "./components/store/ShowStore";
 import "bulma/css/bulma.min.css";
 import { useState, useEffect } from "react";
 import { Routes, Route, useNavigate } from "react-router-dom";
@@ -19,12 +26,18 @@ function App() {
   const navigate = useNavigate();
   const [company, setCompany] = useState([]);
   const [products, setProducts] = useState([]);
+  const [stores, setStores] = useState([]);
+  const [currentStoreId, setCurrentStoreId] = useState("");
   const [users, setUsers] = useState([]);
   const [currentId, setCurrentId] = useState("");
 
   const setId = (id) => {
     setCurrentId(id);
   };
+  const setStoreId = (id) => {
+    setCurrentStoreId(id);
+  };
+  // console.log(currentStoreId);
 
   const getCompany = async () => {
     try {
@@ -75,6 +88,23 @@ function App() {
     // console.log(products);
   };
 
+  const getStore = async () => {
+    try {
+      const res = await fetch(
+        process.env.REACT_APP_BACKEND_URL + "/stores/all_store",
+        {
+          credentials: "include",
+        }
+      );
+      const data = await res.json();
+      setStores(data.data);
+      // console.log(data.data);
+    } catch (err) {
+      console.log(err);
+    }
+    // console.log(products);
+  };
+  // login register
   const loginUser = async (e) => {
     e.preventDefault();
     try {
@@ -193,12 +223,10 @@ function App() {
       console.log(err);
     }
   };
-
+  // product
   const createProduct = (product) => {
     const createProducts = [...products, product];
-
     setProducts(createProducts);
-    console.log(createProducts);
   };
 
   const deleteProduct = (id) => {
@@ -235,10 +263,52 @@ function App() {
       });
   };
 
+  //store
+  const createStore = (store) => {
+    const createStore = [...stores, store];
+    setStores(createStore);
+    // console.log(createStore);
+  };
+
+  const deleteStore = (id) => {
+    fetch(process.env.REACT_APP_BACKEND_URL + "/stores/" + id, {
+      method: "DELETE",
+    })
+      .then((res) => {
+        const findIndex = stores.findIndex((store) => store.id === id);
+        const copyStore = [...stores];
+        copyStore.splice(findIndex, 1);
+        if (res.status === 200) {
+          setStores(stores);
+        }
+      })
+      .then((data) => {
+        console.log(data);
+      });
+  };
+
+  const updateStore = (store) => {
+    fetch(process.env.REACT_APP_BACKEND_URL + "/stores/" + currentStoreId, {
+      method: "PUT",
+      body: JSON.stringify(store),
+      headers: { "Content-Type": "application/json" },
+    })
+      .then(async (res) => {
+        if (res.status === 200) {
+          return await res.json();
+        }
+      })
+      .then((data) => {
+        console.log(data, "update data");
+        navigate("/show/stores");
+      });
+  };
+
   useEffect(() => {
     getUser();
     getCompany();
     getProduct();
+    getStore();
   }, []);
 
   return (
@@ -246,6 +316,8 @@ function App() {
       <Header />
       <Routes>
         <Route path="/" element={<Home />} />
+        <Route path="/create" element={<Create />} />
+        <Route path="/show" element={<Show />} />
         {/* Register */}
         <Route
           path="/company/register"
@@ -267,7 +339,6 @@ function App() {
           path="/user/login"
           element={<UserLogin loginUser={loginUser} />}
         />
-
         <Route path="/register" element={<Register />} />
         <Route path="/login" element={<Login />} />
 
@@ -296,9 +367,8 @@ function App() {
             />
           }
         />
-
         <Route
-          path="/edit/:id"
+          path="/edit/product/:id"
           element={
             <EditProduct
               products={products}
@@ -308,7 +378,42 @@ function App() {
             />
           }
         />
-        <Route path="/create" element={<Create />} />
+        {/* store */}
+        <Route
+          path="/stores/create"
+          element={
+            <CreateStore
+              createStore={createStore}
+              stores={stores}
+              // handleChange={handleChange}
+              company={company}
+              setStores={setStores}
+            />
+          }
+        />
+        <Route
+          path="/show/stores"
+          element={
+            <ShowStore
+              stores={stores}
+              deleteStore={deleteStore}
+              currentStoreId={currentStoreId}
+              navigate={navigate}
+              setStoreId={setStoreId}
+            />
+          }
+        />
+        <Route
+          path="/edit/store/:id"
+          element={
+            <EditStore
+              stores={stores}
+              updateStore={updateStore}
+              currentStoreId={currentStoreId}
+              setStoreId={setStoreId}
+            />
+          }
+        />
       </Routes>
     </div>
   );
