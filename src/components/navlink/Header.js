@@ -35,8 +35,10 @@ function Header() {
         )}
 
         {companyname ? <NavLink to="/create">Create</NavLink> : ""}
-
         {companyname ? <NavLink to="/show">Company Info</NavLink> : ""}
+        {username ? <NavLink to="/invoice">Invoice</NavLink> : ""}
+      </nav>
+      {/* <div>
         {!companyname ? "" : <p>welcome {companyname}</p>}
         {!username ? (
           ""
@@ -47,7 +49,7 @@ function Header() {
             <span>welcome {username}</span>
           </p>
         )}
-      </nav>
+      </div> */}
     </>
   );
 }

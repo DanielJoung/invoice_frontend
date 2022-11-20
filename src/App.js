@@ -3,6 +3,8 @@ import Home from "./components/Home";
 import Header from "./components/navlink/Header";
 import Create from "./components/navlink/Create";
 import Show from "./components/navlink/Show";
+// Invocie
+import Invoice from "./components/invocie/Invoice";
 // login, register
 import Register from "./components/navlink/Register";
 import Login from "./components/navlink/Login";
@@ -64,7 +66,7 @@ function App() {
         }
       );
       const data = await res.json();
-      setUsers(data.data);
+      setUsers(data);
       // console.log(data, "company");
     } catch (err) {
       console.log(err);
@@ -104,6 +106,7 @@ function App() {
     }
     // console.log(products);
   };
+
   // login register
   const loginUser = async (e) => {
     e.preventDefault();
@@ -127,6 +130,8 @@ function App() {
       if (res.status === 200) {
         localStorage.setItem("username", data.data.username);
         localStorage.setItem("usercompname", data.data.company.companyname);
+        localStorage.setItem("compaddress", data.data.company.address);
+        localStorage.setItem("compphone", data.data.company.companyphone);
         console.log(data);
         // getProduct();
         navigate("/");
@@ -415,6 +420,7 @@ function App() {
             />
           }
         />
+        <Route path="/invoice" element={<Invoice users={users} />} />
       </Routes>
     </div>
   );

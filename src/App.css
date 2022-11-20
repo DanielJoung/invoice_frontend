@@ -63,3 +63,41 @@ tbody > tr>td {
 }
 
 
+/* invoice */
+#address {
+  display: flex;
+  /* justify-content: flex-end; */
+  margin-top: 80px;
+}
+
+#searchbar {
+  margin: 25px 100px;
+}
+
+#compAddress {
+  border: 1px solid blue;
+  width: 20%;
+  padding: 0 20px;
+}
+
+#store {
+  border: 1px solid blue;
+  width: 20%;
+  height: 100px;
+  padding: 0 20px;
+
+}
+
+#searchUl {
+  margin-top: 0;
+  margin-left: 50px;
+}
+
+#invoicetd {
+  width: 100%;
+}
+
+#td-item {
+  border-bottom: 1px solid black;
+  border-left: 1px solid black;
+}
