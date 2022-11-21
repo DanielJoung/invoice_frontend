@@ -81,8 +81,9 @@ function CreateStore(props) {
           <div className="control has-icons-left">
             <input
               className="input"
-              type="text"
-              placeholder="Address"
+              type="tel"
+              placeholder="000-000-0000"
+              pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}"
               // name="price"
               id="storephone"
               onChange={handleChange}
@@ -92,15 +93,15 @@ function CreateStore(props) {
         </div>
         <div id="register">
           <label className="label" htmlFor="name">
-            Address{" "}
+            Address
           </label>
-          <input
+          <textarea
             className="textarea"
             placeholder="e.g. 44-44 444th st..."
             onChange={handleChange}
             value={store.address}
             id="address"
-          />
+          ></textarea>
         </div>
 
         <div className="buttons" id="register">

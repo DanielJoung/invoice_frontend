@@ -26,8 +26,9 @@ function CompanyReigster(props) {
           <div className="control has-icons-left">
             <input
               className="input"
-              type="text"
-              placeholder="Company Phone"
+              type="tel"
+              placeholder="000-000-0000"
+              pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}"
               name="companyphone"
               id="companyphone"
             />

@@ -1,11 +1,27 @@
 import React, { useState } from "react";
+import InvoiceForm from "../ui/InvoiceForm";
 
 function Invoice(props) {
   // console.log(props.users);
   const [word, setWord] = useState("");
+  const [price, setPrice] = useState(0);
 
   const handleChange = (e) => {
     setWord(e.target.value);
+  };
+
+  const handleProduct = (e) => {
+    setWord(e.target.value);
+  };
+
+  const handlePrice = (e) => {
+    const { className, value } = e.target;
+    setPrice((prevState) => {
+      return {
+        ...prevState,
+        [className]: value,
+      };
+    });
   };
 
   const searchBar = (e) => {
@@ -21,8 +37,8 @@ function Invoice(props) {
     for (let i in props.users) {
       let storeName = props.users["store"];
       for (let j of storeName) {
-        console.log(j["storename"]);
         if (e.target.innerText === j["storename"]) {
+          // console.log(j["storephone"]);
           storeaddress.innerHTML = j["address"];
           storephone.innerHTML = j["storephone"];
         }
@@ -37,26 +53,49 @@ function Invoice(props) {
     }
   };
 
-  // const tr = document.querySelector(".copyTr");
-  const handleInput = () => {
-    let tbody = document.querySelector(".tbody");
-    let tr = document.createElement("tr");
-    tr.innerHTML = `<td >
-      <input id="invoicetd" />
-    </td>
-    <td >
-      <input id="invoicetd" />
-    </td>
-    <td >
-      <input id="invoicetd" />
-    </td>
-    <td id="td-item">
+  const searchProduct = (e) => {
+    const nameProd = document.querySelector(".nameProd");
+    const priceProd = document.querySelector(".priceProd");
+    const searchProd = document.querySelector("#searchProd");
+    const totalPrice = document.querySelector(".totalPrice");
+    const prodCase = document.querySelector(".prodCase");
+    const invoicetd = document.querySelector("#invoicetd");
+    invoicetd.addEventListener("click", (e) => {
+      e.preventDefault();
+      console.log(e.target);
+    });
+    // const addButton = document.querySelector("#addButton");
 
-    </td>`;
+    nameProd.value = e.target.innerText;
+    // console.log(typeof prodCase.value);
+    for (let i in props.users) {
+      let prodName = props.users["product"];
+      for (let j of prodName) {
+        if (e.target.innerText === j["productname"]) {
+          priceProd.innerHTML = `$${j["price"]}`;
 
-    tbody.appendChild(tr);
-    // console.log(tbody);
+          prodCase.addEventListener("keypress", (e) => {
+            const isNumber = isFinite(e.key);
+            // console.log(number);
+            if (isNumber) {
+              // console.log(number);
+              totalPrice.innerHTML = "$" + j["price"] * Number(e.key);
+            }
+          });
+        }
+      }
+    }
+
+    if (nameProd.value === e.target.innerText) {
+      for (let i of searchProd.children) {
+        for (let j of i.children) {
+          j.innerText = "";
+        }
+      }
+    }
   };
+
+  // const tr = document.querySelector(".copyTr");
 
   return (
     <>
@@ -79,9 +118,7 @@ function Invoice(props) {
               .filter((store) => store.storename.includes(word))
               .map((store, key) => (
                 <li key={store.id} onClick={searchBar}>
-                  <a id="compName" href={() => false}>
-                    {store.storename}
-                  </a>
+                  <a id="compName">{store.storename}</a>
                 </li>
               ))
           )}
@@ -90,50 +127,35 @@ function Invoice(props) {
 
       <div id="address">
         <div id="compAddress">
+          <p>From:</p>
           <p>{localStorage.getItem("usercompname")}</p>
           <p>{localStorage.getItem("compaddress")}</p>
           <p>{localStorage.getItem("compphone")}</p>
         </div>
         <div id="store">
+          <p>To:</p>
           <p id="storename" onClick={searchBar}></p>
           <p id="storeaddress" onClick={searchBar}></p>
           <p id="storephone" onClick={searchBar}></p>
         </div>
       </div>
 
+      <ul id="searchProd">
+        {word === "" ? (
+          <li></li>
+        ) : (
+          props.users.product
+            .filter((prod) => prod.productname.includes(word))
+            .map((prod, key) => (
+              <li key={prod.id} onClick={searchProduct}>
+                <a>{prod.productname}</a>
+              </li>
+            ))
+        )}
+      </ul>
       <form>
-        <table>
-          <thead>
-            <tr>
-              <td>Product</td>
-              <td>Case</td>
-              <td>Price</td>
-              <td>Total Price</td>
-              {/* <td>Add</td> */}
-              {/* <td>Product</td> */}
-            </tr>
-          </thead>
-          <tbody className="tbody">
-            <tr className="copyTr">
-              <td>
-                <input id="invoicetd" />
-              </td>
-              <td>
-                <input id="invoicetd" />
-              </td>
-              <td>
-                <input id="invoicetd" />
-              </td>
-              <td id="td-item"></td>
-            </tr>
-          </tbody>
-        </table>
+        <InvoiceForm handleProduct={handleProduct} handlePrice={handlePrice} />
       </form>
-      <div className="buttons" id="register">
-        <button className="is-primary is-small button" onClick={handleInput}>
-          Add Row
-        </button>
-      </div>
     </>
   );
 }

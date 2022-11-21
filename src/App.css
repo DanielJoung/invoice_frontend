@@ -76,19 +76,24 @@ tbody > tr>td {
 
 #compAddress {
   border: 1px solid blue;
-  width: 20%;
+  width: 30%;
   padding: 0 20px;
 }
 
 #store {
   border: 1px solid blue;
-  width: 20%;
+  width: 30%;
   height: 100px;
   padding: 0 20px;
 
 }
 
 #searchUl {
+  margin-top: 0;
+  margin-left: 50px;
+}
+
+#searchProd {
   margin-top: 0;
   margin-left: 50px;
 }
