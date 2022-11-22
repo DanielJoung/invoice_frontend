@@ -4,14 +4,25 @@ import InvoiceForm from "../ui/InvoiceForm";
 function Invoice(props) {
   // console.log(props.users);
   const [word, setWord] = useState("");
+  const [letter, setLetter] = useState("");
   const [price, setPrice] = useState(0);
-
+  const [invoice, setInvoice] = useState({
+    company: props.users.user,
+    store: props.users.store,
+    product: props.users.product,
+    case: "",
+    balance: "",
+    created_at: "",
+  });
+  // console.log(invoice.product[0].quantity);
+  // console.log(invoice);
   const handleChange = (e) => {
     setWord(e.target.value);
+    // console.log(e.target.value);
   };
 
   const handleProduct = (e) => {
-    setWord(e.target.value);
+    setLetter(e.target.value);
   };
 
   const handlePrice = (e) => {
@@ -26,6 +37,7 @@ function Invoice(props) {
 
   const searchBar = (e) => {
     e.preventDefault();
+    console.log(e.target);
     const company = document.querySelector("#company");
     const searchUl = document.querySelector("#searchUl");
     const storename = document.querySelector("#storename");
@@ -36,6 +48,7 @@ function Invoice(props) {
     // console.log((storename.innerText = e.target.innerText));
     for (let i in props.users) {
       let storeName = props.users["store"];
+      // console.log(storeName);
       for (let j of storeName) {
         if (e.target.innerText === j["storename"]) {
           // console.log(j["storephone"]);
@@ -95,7 +108,43 @@ function Invoice(props) {
     }
   };
 
-  // const tr = document.querySelector(".copyTr");
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      const res = await fetch(
+        process.env.REACT_APP_BACKEND_URL + "/invoices/create",
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            company: invoice.company,
+            store: invoice.store,
+            product: invoice.product,
+            case: invoice.case,
+            balance: invoice.balance,
+            created_at: invoice.created_at,
+          }),
+          credentials: "include",
+        }
+      );
+      const data = await res.json();
+      if (res.status === 201) {
+        props.createInvoice(data);
+      }
+      setInvoice({
+        company: "",
+        store: "",
+        product: "",
+        case: "",
+        balance: "",
+        created_at: "",
+      });
+
+      setInvoice({});
+    } catch (err) {
+      console.log(err);
+    }
+  };
 
   return (
     <>
@@ -134,18 +183,18 @@ function Invoice(props) {
         </div>
         <div id="store">
           <p>To:</p>
-          <p id="storename" onClick={searchBar}></p>
-          <p id="storeaddress" onClick={searchBar}></p>
-          <p id="storephone" onClick={searchBar}></p>
+          <p id="storename"></p>
+          <p id="storeaddress"></p>
+          <p id="storephone"></p>
         </div>
       </div>
 
       <ul id="searchProd">
-        {word === "" ? (
+        {letter === "" ? (
           <li></li>
         ) : (
           props.users.product
-            .filter((prod) => prod.productname.includes(word))
+            .filter((prod) => prod.productname.includes(letter))
             .map((prod, key) => (
               <li key={prod.id} onClick={searchProduct}>
                 <a>{prod.productname}</a>
@@ -153,8 +202,69 @@ function Invoice(props) {
             ))
         )}
       </ul>
-      <form>
-        <InvoiceForm handleProduct={handleProduct} handlePrice={handlePrice} />
+      <form onSubmit={handleSubmit}>
+        <table>
+          <thead>
+            <tr>
+              <td>Product</td>
+              <td>Case</td>
+              <td>Price</td>
+              <td>Total Price</td>
+              {/* <td>Add</td> */}
+              {/* <td>Product</td> */}
+            </tr>
+          </thead>
+          <tbody className="tbody">
+            <tr className="copyTr">
+              <td>
+                <input
+                  id="invoicetd"
+                  className="nameProd"
+                  onChange={handleProduct}
+                  type="text"
+                />
+              </td>
+
+              <td>
+                <input
+                  id="invoicetd"
+                  type="number"
+                  className="prodCase"
+                  onChange={handlePrice}
+                />
+              </td>
+              <td className="priceProd"></td>
+              <td id="td-item" className="totalPrice"></td>
+            </tr>
+
+            <tr className="copyTr">
+              <td>
+                <input
+                  id="invoicetd"
+                  className="nameProd"
+                  onChange={handleProduct}
+                  type="text"
+                />
+              </td>
+
+              <td>
+                <input
+                  id="invoicetd"
+                  type="number"
+                  className="prodCase"
+                  onChange={handlePrice}
+                />
+              </td>
+              <td className="priceProd"></td>
+              <td id="td-item" className="totalPrice"></td>
+            </tr>
+          </tbody>
+        </table>
+        <div className="buttons" id="register">
+          <button className="is-primary is-rounded is-fullwidth button">
+            Create
+          </button>
+        </div>
       </form>
     </>
   );

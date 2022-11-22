@@ -11,8 +11,16 @@ function UserReigster(props) {
     e.preventDefault();
     // const li = document.querySelector("#compName").innerText;
     const company = document.querySelector("#company");
+    const searchUl = document.querySelector("#searchUl");
     company.value = e.target.innerText;
     console.log(e.target.innerText);
+    if (company.value === e.target.innerText) {
+      for (let i of searchUl.children) {
+        for (let j of i.children) {
+          j.innerText = "";
+        }
+      }
+    }
   };
 
   return (
@@ -74,7 +82,7 @@ function UserReigster(props) {
               id="company"
               onChange={handleChange}
             />
-            <ul>
+            <ul id="searchUl">
               {word === "" ? (
                 <li></li>
               ) : (
@@ -82,7 +90,7 @@ function UserReigster(props) {
                   .filter((comp) => comp.companyname.includes(word))
                   .map((comp, key) => (
                     <li key={comp.id}>
-                      <a id="compName" onClick={searchBar} href={() => false}>
+                      <a id="compName" onClick={searchBar}>
                         {comp.companyname}
                       </a>
                     </li>

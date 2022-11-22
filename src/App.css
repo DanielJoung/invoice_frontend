@@ -106,3 +106,7 @@ tbody > tr>td {
   border-bottom: 1px solid black;
   border-left: 1px solid black;
 }
+
+.priceProd {
+  border : 1px solid black;
+}

@@ -31,6 +31,7 @@ function App() {
   const [stores, setStores] = useState([]);
   const [currentStoreId, setCurrentStoreId] = useState("");
   const [users, setUsers] = useState([]);
+  const [invoices, setInvoices] = useState([]);
   const [currentId, setCurrentId] = useState("");
 
   const setId = (id) => {
@@ -40,6 +41,8 @@ function App() {
     setCurrentStoreId(id);
   };
   // console.log(currentStoreId);
+
+  // console.log(users);
 
   const getCompany = async () => {
     try {
@@ -105,6 +108,22 @@ function App() {
       console.log(err);
     }
     // console.log(products);
+  };
+
+  const getInvoice = async () => {
+    try {
+      const res = await fetch(
+        process.env.REACT_APP_BACKEND_URL + "/invoices/all_invoice",
+        {
+          credentials: "include",
+        }
+      );
+      const data = await res.json();
+      setInvoices(data.data);
+      console.log(data.data);
+    } catch (err) {
+      console.log(err);
+    }
   };
 
   // login register
@@ -310,11 +329,18 @@ function App() {
       });
   };
 
+  //invoice
+  const createInvoice = (invoice) => {
+    const createInvoices = [...invoices, invoice];
+    setProducts(createInvoices);
+  };
+
   useEffect(() => {
     getUser();
     getCompany();
     getProduct();
     getStore();
+    getInvoice();
   }, []);
 
   return (
@@ -420,7 +446,10 @@ function App() {
             />
           }
         />
-        <Route path="/invoice" element={<Invoice users={users} />} />
+        <Route
+          path="/invoice"
+          element={<Invoice users={users} createInvoice={createInvoice} />}
+        />
       </Routes>
     </div>
   );
