@@ -120,7 +120,7 @@ function App() {
       );
       const data = await res.json();
       setInvoices(data.data);
-      // console.log(data.data);
+      console.log(data.data);
     } catch (err) {
       console.log(err);
     }
@@ -388,7 +388,7 @@ function App() {
           }
         />
         <Route
-          path="/products/all_item"
+          path="/show/products"
           element={
             <ShowProduct
               products={products}
@@ -424,7 +424,7 @@ function App() {
           }
         />
         <Route
-          path="/stores/all_store"
+          path="/show/stores"
           element={
             <ShowStore
               stores={stores}
@@ -447,7 +447,7 @@ function App() {
           }
         />
         <Route
-          path="/user/search_user"
+          path="/invoice"
           element={<Invoice users={users} createInvoice={createInvoice} />}
         />
       </Routes>
