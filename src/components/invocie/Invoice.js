@@ -5,28 +5,42 @@ function Invoice(props) {
   // console.log(props.users);
   const [word, setWord] = useState("");
   const [letter, setLetter] = useState("");
-  const [price, setPrice] = useState("");
+  const [price, setPrice] = useState(0);
   const [invoice, setInvoice] = useState({
-    company: props.users.user,
-    store: props.users.store,
     product: props.users.product,
-    case: "",
-    balance: "",
+    case: 0,
+    total_case: 0,
+    balance: 0,
+    total_price: 0,
     created_at: "",
   });
-  // console.log(invoice.product[0].quantity);
-  // console.log(invoice);
+
   const handleChange = (e) => {
     setWord(e.target.value);
-    // console.log(e.target.value);
-  };
-
-  const handleProduct = (e) => {
-    setLetter(e.target.value);
   };
 
   const handlePrice = (e) => {
+    const prodCase = document.querySelector(".prodCase");
+    const priceProd = document.querySelector(".priceProd");
+    const totalPrice = document.querySelector(".totalPrice");
     const { id, value } = e.target;
+    // console.log(typeof e.target.value);
+    for (let i in props.users) {
+      const prod = props.users["product"];
+      for (let j of prod) {
+        if (j["productname"] === e.target.value) {
+          priceProd.innerHTML = j["price"];
+
+          // console.log(typeof priceProd.innerHTML);
+        }
+      }
+      if (e.target.className === "prodCase") {
+        totalPrice.innerHTML =
+          Number(e.target.value) * Number(priceProd.innerHTML);
+      }
+      // console.log(priceProd.innerHTML);
+    }
+
     setPrice((prevState) => {
       return {
         ...prevState,
@@ -66,48 +80,6 @@ function Invoice(props) {
     }
   };
 
-  // const searchProduct = (e) => {
-  //   const nameProd = document.querySelector(".nameProd");
-  //   const priceProd = document.querySelector(".priceProd");
-  //   const searchProd = document.querySelector("#searchProd");
-  //   const totalPrice = document.querySelector(".totalPrice");
-  //   const prodCase = document.querySelector(".prodCase");
-  //   const invoicetd = document.querySelector("#invoicetd");
-  //   invoicetd.addEventListener("click", (e) => {
-  //     e.preventDefault();
-  //     console.log(e.target);
-  //   });
-  //   // const addButton = document.querySelector("#addButton");
-
-  //   nameProd.value = e.target.innerText;
-  //   // console.log(typeof prodCase.value);
-  //   for (let i in props.users) {
-  //     let prodName = props.users["product"];
-  //     for (let j of prodName) {
-  //       if (e.target.innerText === j["productname"]) {
-  //         priceProd.innerHTML = `$${j["price"]}`;
-
-  //         prodCase.addEventListener("keypress", (e) => {
-  //           const isNumber = isFinite(e.key);
-  //           // console.log(number);
-  //           if (isNumber) {
-  //             // console.log(number);
-  //             totalPrice.innerHTML = "$" + j["price"] * Number(e.key);
-  //           }
-  //         });
-  //       }
-  //     }
-  //   }
-
-  //   if (nameProd.value === e.target.innerText) {
-  //     for (let i of searchProd.children) {
-  //       for (let j of i.children) {
-  //         j.innerText = "";
-  //       }
-  //     }
-  //   }
-  // };
-
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
@@ -117,11 +89,11 @@ function Invoice(props) {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
-            company: invoice.company,
-            store: invoice.store,
             product: invoice.product,
             case: invoice.case,
+            total_case: invoice.total_case,
             balance: invoice.balance,
+            total_price: invoice.total_price,
             created_at: invoice.created_at,
           }),
           credentials: "include",
@@ -132,11 +104,11 @@ function Invoice(props) {
         props.createInvoice(data);
       }
       setInvoice({
-        company: "",
-        store: "",
-        product: "",
-        case: "",
-        balance: "",
+        product: props.users.product,
+        case: 0,
+        total_case: 0,
+        balance: 0,
+        total_price: 0,
         created_at: "",
       });
 
@@ -220,25 +192,8 @@ function Invoice(props) {
                 <input
                   id="invoicetd"
                   className="nameProd"
-                  onChange={handleProduct}
                   type="text"
-                />
-              </td>
-
-              <td>
-                <input id="invoicetd" type="number" className="prodCase" />
-              </td>
-              <td className="priceProd"></td>
-              <td id="td-item" className="totalPrice"></td>
-            </tr>
-
-            <tr className="copyTr">
-              <td>
-                <input
-                  id="invoicetd"
-                  className="nameProd"
-                  onChange={handleProduct}
-                  type="text"
+                  onChange={handlePrice}
                 />
               </td>
 
@@ -250,8 +205,62 @@ function Invoice(props) {
                   onChange={handlePrice}
                 />
               </td>
-              <td className="priceProd"></td>
-              <td id="td-item" className="totalPrice"></td>
+              <td className="priceProd" onChange={handlePrice}></td>
+              <td
+                id="td-item"
+                className="totalPrice"
+                onChange={handlePrice}
+              ></td>
+            </tr>
+            <tr className="copyTr">
+              <td>
+                <input
+                  id="invoicetd"
+                  className="nameProd"
+                  type="text"
+                  onChange={handlePrice}
+                />
+              </td>
+
+              <td>
+                <input
+                  id="invoicetd"
+                  type="number"
+                  className="prodCase"
+                  onChange={handlePrice}
+                />
+              </td>
+              <td className="priceProd" onChange={handlePrice}></td>
+              <td
+                id="td-item"
+                className="totalPrice"
+                onChange={handlePrice}
+              ></td>
+            </tr>
+            <tr className="copyTr">
+              <td>
+                <input
+                  id="invoicetd"
+                  className="nameProd"
+                  type="text"
+                  onChange={handlePrice}
+                />
+              </td>
+
+              <td>
+                <input
+                  id="invoicetd"
+                  type="number"
+                  className="prodCase"
+                  onChange={handlePrice}
+                />
+              </td>
+              <td className="priceProd" onChange={handlePrice}></td>
+              <td
+                id="td-item"
+                className="totalPrice"
+                onChange={handlePrice}
+              ></td>
             </tr>
           </tbody>
         </table>

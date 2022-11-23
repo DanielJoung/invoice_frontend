@@ -40,6 +40,7 @@ function CreateStore(props) {
       const data = await res.json();
       if (res.status === 201) {
         props.createStore(data);
+        props.getStore();
         console.log(data);
       }
 

@@ -44,6 +44,7 @@ function CreateProduct(props) {
       const data = await resJson.json();
       if (resJson.status === 201) {
         props.createProduct(data);
+        props.getProduct();
         console.log(data);
       }
 

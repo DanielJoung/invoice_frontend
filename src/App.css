@@ -96,7 +96,11 @@ tbody > tr>td {
   margin-left: 50px;
 }
 
-#invoicetd {
+.prodCase {
+  width: 100%;
+}
+
+.nameProd {
   width: 100%;
 }
 

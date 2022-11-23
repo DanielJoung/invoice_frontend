@@ -43,6 +43,7 @@ function App() {
   // console.log(currentStoreId);
 
   // console.log(users);
+  // console.log(products);
 
   const getCompany = async () => {
     try {
@@ -120,7 +121,7 @@ function App() {
       );
       const data = await res.json();
       setInvoices(data.data);
-      console.log(data.data);
+      // console.log(data.data);
     } catch (err) {
       console.log(err);
     }
@@ -252,6 +253,7 @@ function App() {
   const createProduct = (product) => {
     const createProducts = [...products, product];
     setProducts(createProducts);
+    // getStore();
   };
 
   const deleteProduct = (id) => {
@@ -283,7 +285,9 @@ function App() {
         }
       })
       .then((data) => {
-        console.log(data, "update data");
+        console.log(data.data, "update data");
+        // const findProductId
+        getProduct();
         navigate("/show/products");
       });
   };
@@ -292,6 +296,7 @@ function App() {
   const createStore = (store) => {
     const createStore = [...stores, store];
     setStores(createStore);
+    getStore();
     // console.log(createStore);
   };
 
@@ -325,6 +330,7 @@ function App() {
       })
       .then((data) => {
         console.log(data, "update data");
+        getStore();
         navigate("/show/stores");
       });
   };
@@ -383,12 +389,12 @@ function App() {
               products={products}
               // handleChange={handleChange}
               company={company}
-              setProducts={setProducts}
+              getProduct={getProduct}
             />
           }
         />
         <Route
-          path="/products/all_item"
+          path="/show/products"
           element={
             <ShowProduct
               products={products}
@@ -419,12 +425,12 @@ function App() {
               stores={stores}
               // handleChange={handleChange}
               company={company}
-              setStores={setStores}
+              getStore={getStore}
             />
           }
         />
         <Route
-          path="/stores/all_store"
+          path="/show/stores"
           element={
             <ShowStore
               stores={stores}
@@ -448,7 +454,13 @@ function App() {
         />
         <Route
           path="/invoice"
-          element={<Invoice users={users} createInvoice={createInvoice} />}
+          element={
+            <Invoice
+              users={users}
+              createInvoice={createInvoice}
+              getInvoice={getInvoice}
+            />
+          }
         />
       </Routes>
     </div>
