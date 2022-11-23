@@ -388,7 +388,7 @@ function App() {
           }
         />
         <Route
-          path="/show/products"
+          path="/products/all_item"
           element={
             <ShowProduct
               products={products}
@@ -424,7 +424,7 @@ function App() {
           }
         />
         <Route
-          path="/show/stores"
+          path="/stores/all_store"
           element={
             <ShowStore
               stores={stores}
