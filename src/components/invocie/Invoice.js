@@ -5,7 +5,7 @@ function Invoice(props) {
   // console.log(props.users);
   const [word, setWord] = useState("");
   const [letter, setLetter] = useState("");
-  const [price, setPrice] = useState(0);
+  const [price, setPrice] = useState("");
   const [invoice, setInvoice] = useState({
     company: props.users.user,
     store: props.users.store,
@@ -26,11 +26,11 @@ function Invoice(props) {
   };
 
   const handlePrice = (e) => {
-    const { className, value } = e.target;
+    const { id, value } = e.target;
     setPrice((prevState) => {
       return {
         ...prevState,
-        [className]: value,
+        [id]: value,
       };
     });
   };
@@ -66,47 +66,47 @@ function Invoice(props) {
     }
   };
 
-  const searchProduct = (e) => {
-    const nameProd = document.querySelector(".nameProd");
-    const priceProd = document.querySelector(".priceProd");
-    const searchProd = document.querySelector("#searchProd");
-    const totalPrice = document.querySelector(".totalPrice");
-    const prodCase = document.querySelector(".prodCase");
-    const invoicetd = document.querySelector("#invoicetd");
-    invoicetd.addEventListener("click", (e) => {
-      e.preventDefault();
-      console.log(e.target);
-    });
-    // const addButton = document.querySelector("#addButton");
+  // const searchProduct = (e) => {
+  //   const nameProd = document.querySelector(".nameProd");
+  //   const priceProd = document.querySelector(".priceProd");
+  //   const searchProd = document.querySelector("#searchProd");
+  //   const totalPrice = document.querySelector(".totalPrice");
+  //   const prodCase = document.querySelector(".prodCase");
+  //   const invoicetd = document.querySelector("#invoicetd");
+  //   invoicetd.addEventListener("click", (e) => {
+  //     e.preventDefault();
+  //     console.log(e.target);
+  //   });
+  //   // const addButton = document.querySelector("#addButton");
 
-    nameProd.value = e.target.innerText;
-    // console.log(typeof prodCase.value);
-    for (let i in props.users) {
-      let prodName = props.users["product"];
-      for (let j of prodName) {
-        if (e.target.innerText === j["productname"]) {
-          priceProd.innerHTML = `$${j["price"]}`;
+  //   nameProd.value = e.target.innerText;
+  //   // console.log(typeof prodCase.value);
+  //   for (let i in props.users) {
+  //     let prodName = props.users["product"];
+  //     for (let j of prodName) {
+  //       if (e.target.innerText === j["productname"]) {
+  //         priceProd.innerHTML = `$${j["price"]}`;
 
-          prodCase.addEventListener("keypress", (e) => {
-            const isNumber = isFinite(e.key);
-            // console.log(number);
-            if (isNumber) {
-              // console.log(number);
-              totalPrice.innerHTML = "$" + j["price"] * Number(e.key);
-            }
-          });
-        }
-      }
-    }
+  //         prodCase.addEventListener("keypress", (e) => {
+  //           const isNumber = isFinite(e.key);
+  //           // console.log(number);
+  //           if (isNumber) {
+  //             // console.log(number);
+  //             totalPrice.innerHTML = "$" + j["price"] * Number(e.key);
+  //           }
+  //         });
+  //       }
+  //     }
+  //   }
 
-    if (nameProd.value === e.target.innerText) {
-      for (let i of searchProd.children) {
-        for (let j of i.children) {
-          j.innerText = "";
-        }
-      }
-    }
-  };
+  //   if (nameProd.value === e.target.innerText) {
+  //     for (let i of searchProd.children) {
+  //       for (let j of i.children) {
+  //         j.innerText = "";
+  //       }
+  //     }
+  //   }
+  // };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -174,7 +174,7 @@ function Invoice(props) {
         </ul>
       </form>
 
-      <div id="address">
+      <div className="address">
         <div id="compAddress">
           <p>From:</p>
           <p>{localStorage.getItem("usercompname")}</p>
@@ -189,7 +189,7 @@ function Invoice(props) {
         </div>
       </div>
 
-      <ul id="searchProd">
+      {/* <ul id="searchProd">
         {letter === "" ? (
           <li></li>
         ) : (
@@ -201,7 +201,7 @@ function Invoice(props) {
               </li>
             ))
         )}
-      </ul>
+      </ul> */}
       <form onSubmit={handleSubmit}>
         <table>
           <thead>
@@ -226,12 +226,7 @@ function Invoice(props) {
               </td>
 
               <td>
-                <input
-                  id="invoicetd"
-                  type="number"
-                  className="prodCase"
-                  onChange={handlePrice}
-                />
+                <input id="invoicetd" type="number" className="prodCase" />
               </td>
               <td className="priceProd"></td>
               <td id="td-item" className="totalPrice"></td>

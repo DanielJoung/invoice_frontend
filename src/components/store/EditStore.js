@@ -63,19 +63,16 @@ function EditStore(props) {
             />
           </div>
         </div>
-        <div className="field" id="register">
+        <div id="register">
           <label className="label" htmlFor="name">
             Address
           </label>
-          <div className="control has-icons-left">
-            <input
-              className="input"
-              type="text"
-              value={editStore.address}
-              id="address"
-              onChange={(e) => handleChange(e)}
-            />
-          </div>
+          <textarea
+            className="textarea"
+            value={editStore.address}
+            id="address"
+            onChange={(e) => handleChange(e)}
+          ></textarea>
         </div>
 
         <div className="buttons" id="register">
