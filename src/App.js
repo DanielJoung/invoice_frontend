@@ -121,7 +121,7 @@ function App() {
       );
       const data = await res.json();
       setInvoices(data.data);
-      // console.log(data.data);
+      console.log(data.data);
     } catch (err) {
       console.log(err);
     }

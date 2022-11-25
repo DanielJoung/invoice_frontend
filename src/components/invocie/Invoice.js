@@ -5,13 +5,13 @@ function Invoice(props) {
   // console.log(props.users);
   const [word, setWord] = useState("");
   const [letter, setLetter] = useState("");
-  const [price, setPrice] = useState(0);
+  const [price, setPrice] = useState("");
+  const [quantity, setQuantity] = useState([]);
   const [invoice, setInvoice] = useState({
     product: props.users.product,
-    case: 0,
     total_case: 0,
+
     balance: 0,
-    total_price: 0,
     created_at: "",
   });
 
@@ -19,29 +19,20 @@ function Invoice(props) {
     setWord(e.target.value);
   };
 
-  const handlePrice = (e) => {
-    const prodCase = document.querySelector(".prodCase");
-    const priceProd = document.querySelector(".priceProd");
-    const totalPrice = document.querySelector(".totalPrice");
+  const handleCase = (e) => {
+    const prodCase = document.querySelectorAll(".prodCase");
     const { id, value } = e.target;
-    // console.log(typeof e.target.value);
-    for (let i in props.users) {
-      const prod = props.users["product"];
-      for (let j of prod) {
-        if (j["productname"] === e.target.value) {
-          priceProd.innerHTML = j["price"];
+    let num = 0;
+    let balance = 0;
+    prodCase.forEach((prod) => {
+      num += Number(prod.value);
+      balance += Number(prod.value) * Number(prod.id);
+    });
 
-          // console.log(typeof priceProd.innerHTML);
-        }
-      }
-      if (e.target.className === "prodCase") {
-        totalPrice.innerHTML =
-          Number(e.target.value) * Number(priceProd.innerHTML);
-      }
-      // console.log(priceProd.innerHTML);
-    }
+    invoice.total_case = num;
+    invoice.balance = balance;
 
-    setPrice((prevState) => {
+    setQuantity((prevState) => {
       return {
         ...prevState,
         [id]: value,
@@ -51,7 +42,7 @@ function Invoice(props) {
 
   const searchBar = (e) => {
     e.preventDefault();
-    console.log(e.target);
+    // console.log(e.target);
     const company = document.querySelector("#company");
     const searchUl = document.querySelector("#searchUl");
     const storename = document.querySelector("#storename");
@@ -90,10 +81,8 @@ function Invoice(props) {
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
             product: invoice.product,
-            case: invoice.case,
             total_case: invoice.total_case,
             balance: invoice.balance,
-            total_price: invoice.total_price,
             created_at: invoice.created_at,
           }),
           credentials: "include",
@@ -117,7 +106,7 @@ function Invoice(props) {
       console.log(err);
     }
   };
-
+  console.log(invoice);
   return (
     <>
       <form id="searchbar">
@@ -161,106 +150,41 @@ function Invoice(props) {
         </div>
       </div>
 
-      {/* <ul id="searchProd">
-        {letter === "" ? (
-          <li></li>
-        ) : (
-          props.users.product
-            .filter((prod) => prod.productname.includes(letter))
-            .map((prod, key) => (
-              <li key={prod.id} onClick={searchProduct}>
-                <a>{prod.productname}</a>
-              </li>
-            ))
-        )}
-      </ul> */}
       <form onSubmit={handleSubmit}>
         <table>
           <thead>
             <tr>
               <td>Product</td>
-              <td>Case</td>
               <td>Price</td>
-              <td>Total Price</td>
-              {/* <td>Add</td> */}
-              {/* <td>Product</td> */}
+              <td>Case</td>
             </tr>
           </thead>
           <tbody className="tbody">
-            <tr className="copyTr">
-              <td>
-                <input
-                  id="invoicetd"
-                  className="nameProd"
-                  type="text"
-                  onChange={handlePrice}
-                />
-              </td>
+            {invoice.product.map((prod, i) => {
+              return (
+                <tr key={prod.id} className="tr">
+                  <td id="td-item">{prod.productname}</td>
+                  <td id="td-item">${prod.price}</td>
+                  <td id="td-item">
+                    <input
+                      className="prodCase"
+                      id={prod.price}
+                      type="number"
+                      onChange={handleCase}
+                      // value={prod.case}
+                    />
+                  </td>
+                </tr>
+              );
+            })}
 
-              <td>
-                <input
-                  id="invoicetd"
-                  type="number"
-                  className="prodCase"
-                  onChange={handlePrice}
-                />
+            <tr>
+              <td className="totalCase">
+                Total Case: {invoice.total_case} case
               </td>
-              <td className="priceProd" onChange={handlePrice}></td>
-              <td
-                id="td-item"
-                className="totalPrice"
-                onChange={handlePrice}
-              ></td>
             </tr>
-            <tr className="copyTr">
-              <td>
-                <input
-                  id="invoicetd"
-                  className="nameProd"
-                  type="text"
-                  onChange={handlePrice}
-                />
-              </td>
-
-              <td>
-                <input
-                  id="invoicetd"
-                  type="number"
-                  className="prodCase"
-                  onChange={handlePrice}
-                />
-              </td>
-              <td className="priceProd" onChange={handlePrice}></td>
-              <td
-                id="td-item"
-                className="totalPrice"
-                onChange={handlePrice}
-              ></td>
-            </tr>
-            <tr className="copyTr">
-              <td>
-                <input
-                  id="invoicetd"
-                  className="nameProd"
-                  type="text"
-                  onChange={handlePrice}
-                />
-              </td>
-
-              <td>
-                <input
-                  id="invoicetd"
-                  type="number"
-                  className="prodCase"
-                  onChange={handlePrice}
-                />
-              </td>
-              <td className="priceProd" onChange={handlePrice}></td>
-              <td
-                id="td-item"
-                className="totalPrice"
-                onChange={handlePrice}
-              ></td>
+            <tr>
+              <td className="balance">Balance: ${invoice.balance}</td>
             </tr>
           </tbody>
         </table>
