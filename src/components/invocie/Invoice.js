@@ -9,12 +9,10 @@ function Invoice(props) {
   const [quantity, setQuantity] = useState([]);
   const [invoice, setInvoice] = useState({
     product: props.users.product,
-    total_case: 0,
-
+    case: 0,
     balance: 0,
-    created_at: "",
   });
-
+  console.log(props.users.product);
   const handleChange = (e) => {
     setWord(e.target.value);
   };
@@ -29,7 +27,7 @@ function Invoice(props) {
       balance += Number(prod.value) * Number(prod.id);
     });
 
-    invoice.total_case = num;
+    invoice.case = num;
     invoice.balance = balance;
 
     setQuantity((prevState) => {
@@ -81,9 +79,8 @@ function Invoice(props) {
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
             product: invoice.product,
-            total_case: invoice.total_case,
+            case: invoice.case,
             balance: invoice.balance,
-            created_at: invoice.created_at,
           }),
           credentials: "include",
         }
@@ -95,10 +92,7 @@ function Invoice(props) {
       setInvoice({
         product: props.users.product,
         case: 0,
-        total_case: 0,
         balance: 0,
-        total_price: 0,
-        created_at: "",
       });
 
       setInvoice({});
@@ -174,17 +168,16 @@ function Invoice(props) {
                       // value={prod.case}
                     />
                   </td>
+                  {/* <td id="td-item">${prod.balance}</td> */}
                 </tr>
               );
             })}
 
             <tr>
-              <td className="totalCase">
-                Total Case: {invoice.total_case} case
-              </td>
+              <td className="totalCase">Total Case: {invoice.case} case</td>
             </tr>
             <tr>
-              <td className="balance">Balance: ${invoice.balance}</td>
+              <td className="balance">Balance: {invoice.balance}</td>
             </tr>
           </tbody>
         </table>

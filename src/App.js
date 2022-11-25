@@ -126,6 +126,7 @@ function App() {
       console.log(err);
     }
   };
+  // console.log(invoices);
 
   // login register
   const loginUser = async (e) => {
@@ -341,6 +342,7 @@ function App() {
     setProducts(createInvoices);
   };
 
+  // console.log(users);
   useEffect(() => {
     getUser();
     getCompany();
