@@ -3,8 +3,10 @@ import Home from "./components/Home";
 import Header from "./components/navlink/Header";
 import Create from "./components/navlink/Create";
 import Show from "./components/navlink/Show";
+import NavInvoice from "./components/navlink/NavInvoice";
 // Invocie
 import Invoice from "./components/invocie/Invoice";
+import ShowInvoice from "./components/invocie/ShowInvoice";
 // login, register
 import Register from "./components/navlink/Register";
 import Login from "./components/navlink/Login";
@@ -29,21 +31,18 @@ function App() {
   const [company, setCompany] = useState([]);
   const [products, setProducts] = useState([]);
   const [stores, setStores] = useState([]);
+  const [store, setStore] = useState([]);
   const [currentStoreId, setCurrentStoreId] = useState("");
   const [users, setUsers] = useState([]);
   const [invoices, setInvoices] = useState([]);
   const [currentId, setCurrentId] = useState("");
-
+  // console.log(stores);
   const setId = (id) => {
     setCurrentId(id);
   };
   const setStoreId = (id) => {
     setCurrentStoreId(id);
   };
-  // console.log(currentStoreId);
-
-  // console.log(users);
-  // console.log(products);
 
   const getCompany = async () => {
     try {
@@ -121,7 +120,7 @@ function App() {
       );
       const data = await res.json();
       setInvoices(data.data);
-      console.log(data.data);
+      // console.log(data.data);
     } catch (err) {
       console.log(err);
     }
@@ -339,10 +338,9 @@ function App() {
   //invoice
   const createInvoice = (invoice) => {
     const createInvoices = [...invoices, invoice];
-    setProducts(createInvoices);
+    setInvoices(createInvoices);
   };
 
-  // console.log(users);
   useEffect(() => {
     getUser();
     getCompany();
@@ -358,6 +356,7 @@ function App() {
         <Route path="/" element={<Home />} />
         <Route path="/create" element={<Create />} />
         <Route path="/show" element={<Show />} />
+        <Route path="/invoice" element={<NavInvoice />} />
         {/* Register */}
         <Route
           path="/company/register"
@@ -455,14 +454,23 @@ function App() {
           }
         />
         <Route
-          path="/invoice"
+          path="/create/invoice"
           element={
             <Invoice
               users={users}
+              invoices={invoices}
               createInvoice={createInvoice}
+              store={store}
+              setStore={setStore}
+              getUser={getUser}
               getInvoice={getInvoice}
+              // getInvoice={getInvoice}
             />
           }
+        />
+        <Route
+          path="/show/invoice"
+          element={<ShowInvoice invoices={invoices} />}
         />
       </Routes>
     </div>

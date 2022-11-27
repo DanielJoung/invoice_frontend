@@ -2,17 +2,17 @@ import React, { useState } from "react";
 import InvoiceForm from "../ui/InvoiceForm";
 
 function Invoice(props) {
-  // console.log(props.users);
+  const product = props.users.product;
+  // console.log(product);
   const [word, setWord] = useState("");
-  const [letter, setLetter] = useState("");
-  const [price, setPrice] = useState("");
   const [quantity, setQuantity] = useState([]);
   const [invoice, setInvoice] = useState({
-    product: props.users.product,
+    product: product,
     case: 0,
     balance: 0,
+    user: localStorage.getItem("username"),
   });
-  console.log(props.users.product);
+
   const handleChange = (e) => {
     setWord(e.target.value);
   };
@@ -26,9 +26,9 @@ function Invoice(props) {
       num += Number(prod.value);
       balance += Number(prod.value) * Number(prod.id);
     });
-
+    // console.log(balance.toFixed(2));
     invoice.case = num;
-    invoice.balance = balance;
+    invoice.balance = balance.toFixed(2);
 
     setQuantity((prevState) => {
       return {
@@ -37,7 +37,7 @@ function Invoice(props) {
       };
     });
   };
-
+  // const storeInfo = "";
   const searchBar = (e) => {
     e.preventDefault();
     // console.log(e.target);
@@ -47,19 +47,18 @@ function Invoice(props) {
     const storeaddress = document.querySelector("#storeaddress");
     const storephone = document.querySelector("#storephone");
     company.value = e.target.innerText;
-    storename.innerHTML = e.target.innerText;
-    // console.log((storename.innerText = e.target.innerText));
+    storename.innerHTML = "Store: " + e.target.innerText;
     for (let i in props.users) {
       let storeName = props.users["store"];
-      // console.log(storeName);
       for (let j of storeName) {
         if (e.target.innerText === j["storename"]) {
-          // console.log(j["storephone"]);
-          storeaddress.innerHTML = j["address"];
-          storephone.innerHTML = j["storephone"];
+          storeaddress.innerHTML = "Address: " + j["address"];
+          storephone.innerHTML = "Phone: " + j["storephone"];
         }
       }
     }
+    // storeInfo = props.store;
+
     if (company.value === e.target.innerText) {
       for (let i of searchUl.children) {
         for (let j of i.children) {
@@ -68,6 +67,7 @@ function Invoice(props) {
       }
     }
   };
+  // console.log(props.store);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -79,8 +79,10 @@ function Invoice(props) {
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
             product: invoice.product,
+            store: props.store,
             case: invoice.case,
             balance: invoice.balance,
+            user: invoice.user,
           }),
           credentials: "include",
         }
@@ -88,19 +90,20 @@ function Invoice(props) {
       const data = await res.json();
       if (res.status === 201) {
         props.createInvoice(data);
+        props.getInvoice();
+        console.log(data);
       }
       setInvoice({
         product: props.users.product,
         case: 0,
         balance: 0,
+        user: localStorage.getItem("username"),
       });
-
-      setInvoice({});
     } catch (err) {
       console.log(err);
     }
   };
-  console.log(invoice);
+
   return (
     <>
       <form id="searchbar">
@@ -132,9 +135,9 @@ function Invoice(props) {
       <div className="address">
         <div id="compAddress">
           <p>From:</p>
-          <p>{localStorage.getItem("usercompname")}</p>
-          <p>{localStorage.getItem("compaddress")}</p>
-          <p>{localStorage.getItem("compphone")}</p>
+          <p>Comapny: {localStorage.getItem("usercompname")}</p>
+          <p>Address: {localStorage.getItem("compaddress")}</p>
+          <p>Phone: {localStorage.getItem("compphone")}</p>
         </div>
         <div id="store">
           <p>To:</p>
@@ -150,6 +153,7 @@ function Invoice(props) {
             <tr>
               <td>Product</td>
               <td>Price</td>
+              <td>Discount</td>
               <td>Case</td>
             </tr>
           </thead>
@@ -159,10 +163,11 @@ function Invoice(props) {
                 <tr key={prod.id} className="tr">
                   <td id="td-item">{prod.productname}</td>
                   <td id="td-item">${prod.price}</td>
+                  <td id="td-item">{prod.discount}%</td>
                   <td id="td-item">
                     <input
                       className="prodCase"
-                      id={prod.price}
+                      id={prod.price * (1 - prod.discount / 100)}
                       type="number"
                       onChange={handleCase}
                       // value={prod.case}
@@ -172,12 +177,10 @@ function Invoice(props) {
                 </tr>
               );
             })}
-
-            <tr>
+            <tr className="invoiceInfo">
+              <td>Rep: {invoice.user}</td>
               <td className="totalCase">Total Case: {invoice.case} case</td>
-            </tr>
-            <tr>
-              <td className="balance">Balance: {invoice.balance}</td>
+              <td className="balance">Balance: ${invoice.balance}</td>
             </tr>
           </tbody>
         </table>
