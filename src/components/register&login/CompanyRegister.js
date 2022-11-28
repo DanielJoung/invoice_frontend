@@ -4,6 +4,8 @@ function CompanyReigster(props) {
   return (
     <>
       <h1 id="tag">Reigster</h1>
+      <p id="error">{props.error}</p>
+
       <form onSubmit={props.registerCompany}>
         <div className="field" id="register">
           <label className="label" htmlFor="name">

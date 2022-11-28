@@ -8,6 +8,7 @@ function Invoice(props) {
   const [quantity, setQuantity] = useState([]);
   const [invoice, setInvoice] = useState({
     product: product,
+    user: "",
     case: 0,
     balance: 0,
     user: localStorage.getItem("username"),
@@ -67,7 +68,7 @@ function Invoice(props) {
       }
     }
   };
-  // console.log(props.store);
+  console.log(invoice);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -103,6 +104,7 @@ function Invoice(props) {
       console.log(err);
     }
   };
+  console.log(invoice);
 
   return (
     <>
@@ -185,9 +187,7 @@ function Invoice(props) {
           </tbody>
         </table>
         <div className="buttons" id="register">
-          <button className="is-primary is-rounded is-fullwidth button">
-            Create
-          </button>
+          <button className="is-primary is-rounded button">Create</button>
         </div>
       </form>
     </>

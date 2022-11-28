@@ -112,3 +112,8 @@ tbody > tr>td {
 .invoiceInfo {
  font-weight: bold;
 }
+
+#error {
+  margin-left: 28px;
+  color: red;
+}

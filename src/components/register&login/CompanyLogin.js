@@ -4,6 +4,7 @@ function CompanyLogin(props) {
   return (
     <>
       <h1 id="tag">Login</h1>
+      <p id="error">{props.error}</p>
       <form onSubmit={props.loginCompany}>
         <div className="field" id="register">
           <label className="label" htmlFor="name">

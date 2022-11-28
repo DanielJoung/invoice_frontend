@@ -36,11 +36,17 @@ function App() {
   const [users, setUsers] = useState([]);
   const [invoices, setInvoices] = useState([]);
   const [currentId, setCurrentId] = useState("");
+  const [invoiceId, setInvoiceId] = useState("");
+  const [error, setError] = useState("");
   // console.log(stores);
   const setId = (id) => {
     setCurrentId(id);
   };
   const setStoreId = (id) => {
+    setInvoiceId(id);
+  };
+
+  const setInvoicesId = (id) => {
     setCurrentStoreId(id);
   };
 
@@ -119,13 +125,12 @@ function App() {
         }
       );
       const data = await res.json();
-      setInvoices(data.data);
-      // console.log(data.data);
+      setInvoices(data);
+      console.log(data);
     } catch (err) {
       console.log(err);
     }
   };
-  // console.log(invoices);
 
   // login register
   const loginUser = async (e) => {
@@ -156,10 +161,14 @@ function App() {
         // getProduct();
         navigate("/");
       }
+      if (res.status === 401) {
+        setError(data.status["message"]);
+      }
     } catch (err) {
       console.log(err);
     }
   };
+  // console.log(error);
 
   const registerUser = async (e) => {
     e.preventDefault();
@@ -185,6 +194,9 @@ function App() {
         console.log("register");
         getCompany();
         navigate("user/login");
+      }
+      if (res.status === 401) {
+        setError(data.status["message"]);
       }
     } catch (err) {
       console.log(err);
@@ -216,6 +228,9 @@ function App() {
         getProduct();
         navigate("/");
       }
+      if (res.status === 401) {
+        setError(data.status["message"]);
+      }
     } catch (err) {
       console.log(err);
     }
@@ -240,15 +255,22 @@ function App() {
           }),
         }
       );
-      console.log(res.json());
+      // console.log(res.json());
+      const data = await res.json();
+      console.log(data.status);
       if (res.status === 201) {
         console.log("register");
         navigate("company/login");
+      }
+      if (data.status.code === 401) {
+        setError(data.status["message"]);
+        console.log(error);
       }
     } catch (err) {
       console.log(err);
     }
   };
+
   // product
   const createProduct = (product) => {
     const createProducts = [...products, product];
@@ -295,6 +317,7 @@ function App() {
   //store
   const createStore = (store) => {
     const createStore = [...stores, store];
+
     setStores(createStore);
     getStore();
     // console.log(createStore);
@@ -338,7 +361,26 @@ function App() {
   //invoice
   const createInvoice = (invoice) => {
     const createInvoices = [...invoices, invoice];
+    // console.log(createInvoices);
     setInvoices(createInvoices);
+    getInvoice();
+  };
+
+  const deleteInvoice = (id) => {
+    fetch(process.env.REACT_APP_BACKEND_URL + "/invoices/" + id, {
+      method: "DELETE",
+    })
+      .then((res) => {
+        const findIndex = invoices.findIndex((invoice) => invoice.id === id);
+        const copyProduct = [...invoices];
+        copyProduct.splice(findIndex, 1);
+        if (res.status === 200) {
+          setInvoices(invoices);
+        }
+      })
+      .then((data) => {
+        console.log(data);
+      });
   };
 
   useEffect(() => {
@@ -360,23 +402,29 @@ function App() {
         {/* Register */}
         <Route
           path="/company/register"
-          element={<CompanyReigster registerCompany={registerCompany} />}
+          element={
+            <CompanyReigster registerCompany={registerCompany} error={error} />
+          }
         />
         <Route
           path="/user/register"
           element={
-            <UserReigster registerUser={registerUser} company={company} />
+            <UserReigster
+              registerUser={registerUser}
+              company={company}
+              error={error}
+            />
           }
         />
 
         {/* Login */}
         <Route
           path="/company/login"
-          element={<CompanyLogin loginCompany={loginCompany} />}
+          element={<CompanyLogin loginCompany={loginCompany} error={error} />}
         />
         <Route
           path="/user/login"
-          element={<UserLogin loginUser={loginUser} />}
+          element={<UserLogin loginUser={loginUser} error={error} />}
         />
         <Route path="/register" element={<Register />} />
         <Route path="/login" element={<Login />} />
@@ -470,7 +518,13 @@ function App() {
         />
         <Route
           path="/show/invoice"
-          element={<ShowInvoice invoices={invoices} />}
+          element={
+            <ShowInvoice
+              invoices={invoices}
+              deleteInvoice={deleteInvoice}
+              setInvoicesId={setInvoicesId}
+            />
+          }
         />
       </Routes>
     </div>

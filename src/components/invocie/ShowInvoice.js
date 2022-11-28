@@ -17,7 +17,7 @@ function ShowInvoice(props) {
         </tr>
       </thead>
       <tbody>
-        {props.invoices.map((invoice, i) => {
+        {props.invoices.data.map((invoice, i) => {
           // console.log(product.id);
 
           return (
@@ -30,15 +30,15 @@ function ShowInvoice(props) {
               {/* <td>{product.company.companyname}</td> */}
 
               <td>
-                {/* <form>
+                <form>
                   <input
                     type="submit"
                     value="delete"
                     onClick={() => {
-                      props.deleteProduct(product.id);
+                      props.deleteInvoice(invoice.id);
                     }}
                   />
-                </form> */}
+                </form>
               </td>
             </tr>
           );
