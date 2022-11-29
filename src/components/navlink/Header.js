@@ -3,40 +3,38 @@ import Logout from "./Logout";
 import { NavLink, Link } from "react-router-dom";
 
 function Header() {
-  let activeStyle = {
-    color: "white",
-  };
-
   const companyname = localStorage.getItem("companyname");
   const username = localStorage.getItem("username");
   const usercompname = localStorage.getItem("usercompname");
   return (
     <>
-      <nav>
-        <Link to="/">Invoice Maker</Link>
+      <nav id="navHeader">
+        <Link to="/" className="headerLink">
+          Invoice Maker
+        </Link>
 
-        {companyname || username ? (
-          <Logout />
+        {companyname ? (
+          <NavLink to="/show" className="headerLink">
+            Company Info
+          </NavLink>
         ) : (
-          <div id="header">
-            <NavLink
-              to="/login"
-              style={({ isActive }) => (isActive ? activeStyle : undefined)}
-            >
-              Login
-            </NavLink>
-            <NavLink
-              to="/register"
-              style={({ isActive }) => (isActive ? activeStyle : undefined)}
-            >
-              Register
-            </NavLink>
-          </div>
+          ""
         )}
-
-        {companyname ? <NavLink to="/create">Create</NavLink> : ""}
-        {companyname ? <NavLink to="/show">Company Info</NavLink> : ""}
-        {username ? <NavLink to="/invoice">Invoice</NavLink> : ""}
+        {username ? (
+          <a href="/invoice" className="headerLink">
+            Invoice
+          </a>
+        ) : (
+          ""
+        )}
+        {companyname ? (
+          <NavLink to="/create" className="headerLink">
+            Create
+          </NavLink>
+        ) : (
+          ""
+        )}
+        {companyname || username ? <Logout /> : ""}
       </nav>
       {/* <div>
         {!companyname ? "" : <p>welcome {companyname}</p>}

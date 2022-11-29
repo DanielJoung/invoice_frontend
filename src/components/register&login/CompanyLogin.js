@@ -2,7 +2,7 @@ import React from "react";
 
 function CompanyLogin(props) {
   return (
-    <>
+    <div id="login-register">
       <h1 id="tag">Login</h1>
       <p id="error">{props.error}</p>
       <form onSubmit={props.loginCompany}>
@@ -14,7 +14,7 @@ function CompanyLogin(props) {
             <input
               className="input"
               type="email"
-              placeholder="Email"
+              placeholder="Company Email"
               name="email"
               id="email"
             />
@@ -40,7 +40,7 @@ function CompanyLogin(props) {
           </button>
         </div>
       </form>
-    </>
+    </div>
   );
 }
 

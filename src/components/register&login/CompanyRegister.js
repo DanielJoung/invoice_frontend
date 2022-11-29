@@ -2,7 +2,7 @@ import React from "react";
 
 function CompanyReigster(props) {
   return (
-    <>
+    <div id="login-register">
       <h1 id="tag">Reigster</h1>
       <p id="error">{props.error}</p>
 
@@ -81,7 +81,7 @@ function CompanyReigster(props) {
           </button>
         </div>
       </form>
-    </>
+    </div>
   );
 }
 

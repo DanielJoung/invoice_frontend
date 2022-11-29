@@ -23,17 +23,17 @@ function ShowStore(props) {
 
           return (
             <tr key={store.id} id="productId">
-              <td>{store.storename}</td>
-              <td>{store.storephone}</td>
-              <td>{store.address}</td>
+              <td id="item-list">{store.storename}</td>
+              <td id="item-list">{store.storephone}</td>
+              <td id="item-list">{store.address}</td>
 
               {/* <td>{product.company.companyname}</td> */}
-              <td>
+              <td id="item-list">
                 <button value="edit" onClick={() => handleEdit(store.id)}>
                   Edit
                 </button>
               </td>
-              <td>
+              <td id="item-list">
                 <form>
                   <input
                     type="submit"

@@ -24,7 +24,7 @@ function UserReigster(props) {
   };
 
   return (
-    <>
+    <div id="login-register">
       <h1 id="tag">Reigster</h1>
       <p id="error">{props.error}</p>
 
@@ -107,7 +107,7 @@ function UserReigster(props) {
           </button>
         </div>
       </form>
-    </>
+    </div>
   );
 }
 

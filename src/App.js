@@ -4,6 +4,7 @@ import Header from "./components/navlink/Header";
 import Create from "./components/navlink/Create";
 import Show from "./components/navlink/Show";
 import NavInvoice from "./components/navlink/NavInvoice";
+import Footer from "./components/navlink/Footer";
 // Invocie
 import Invoice from "./components/invocie/Invoice";
 import ShowInvoice from "./components/invocie/ShowInvoice";
@@ -23,6 +24,7 @@ import CreateStore from "./components/store/CreateStore";
 import EditStore from "./components/store/EditStore";
 import ShowStore from "./components/store/ShowStore";
 import "bulma/css/bulma.min.css";
+import FontAwesomeIcon from "@fortawesome/react-fontawesome";
 import { useState, useEffect } from "react";
 import { Routes, Route, useNavigate } from "react-router-dom";
 
@@ -43,11 +45,11 @@ function App() {
     setCurrentId(id);
   };
   const setStoreId = (id) => {
-    setInvoiceId(id);
+    setCurrentStoreId(id);
   };
 
   const setInvoicesId = (id) => {
-    setCurrentStoreId(id);
+    setInvoiceId(id);
   };
 
   const getCompany = async () => {
@@ -126,7 +128,7 @@ function App() {
       );
       const data = await res.json();
       setInvoices(data);
-      console.log(data);
+      // console.log(data);
     } catch (err) {
       console.log(err);
     }
@@ -320,8 +322,9 @@ function App() {
 
     setStores(createStore);
     getStore();
-    // console.log(createStore);
+    console.log(createStore);
   };
+  // console.log(stores);
 
   const deleteStore = (id) => {
     fetch(process.env.REACT_APP_BACKEND_URL + "/stores/" + id, {
@@ -527,6 +530,7 @@ function App() {
           }
         />
       </Routes>
+      <Footer />
     </div>
   );
 }

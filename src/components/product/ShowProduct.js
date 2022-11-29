@@ -24,17 +24,17 @@ function ShowProduct(props) {
 
           return (
             <tr key={product.id} id="productId">
-              <td>{product.productname}</td>
-              <td>{product.price}</td>
-              <td>{product.quantity}</td>
-              <td>{product.discount}</td>
+              <td id="item-list">{product.productname}</td>
+              <td id="item-list">{product.price}</td>
+              <td id="item-list">{product.quantity}</td>
+              <td id="item-list">{product.discount}</td>
               {/* <td>{product.company.companyname}</td> */}
-              <td>
+              <td id="item-list">
                 <button value="edit" onClick={() => handleEdit(product.id)}>
                   Edit
                 </button>
               </td>
-              <td>
+              <td id="item-list">
                 <form>
                   <input
                     type="submit"

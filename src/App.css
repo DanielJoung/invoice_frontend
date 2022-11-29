@@ -10,6 +10,14 @@ nav {
   font-size: 1.5em;  
 }
 
+#navHeader {
+  background-color: rgb(6, 100, 26);
+}
+
+.headerLink {
+  color: white
+}
+
 #header > a {
   text-decoration: none;
   padding: 10vw;
@@ -116,4 +124,26 @@ tbody > tr>td {
 #error {
   margin-left: 28px;
   color: red;
+}
+
+
+
+#item-list {
+  border: 1px solid black;
+}
+
+#logout {
+  color: white;
+
+}
+
+#footer {
+  position: fixed;
+  bottom: 0;
+  width:100%;
+}
+
+#home {
+  margin-left: 45%;
+  margin-top: 15%;
 }

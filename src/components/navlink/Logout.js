@@ -7,7 +7,9 @@ function Logout() {
   };
   return (
     <>
-      <a onClick={handleClick}>Logout</a>
+      <a onClick={handleClick} id="logout">
+        Logout
+      </a>
     </>
   );
 }

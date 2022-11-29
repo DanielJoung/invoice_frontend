@@ -2,7 +2,7 @@ import React, { useState } from "react";
 
 function UserLogin(props) {
   return (
-    <>
+    <div id="login-register">
       <h1 id="tag">Login</h1>
       <p id="error">{props.error}</p>
 
@@ -15,7 +15,7 @@ function UserLogin(props) {
             <input
               className="input"
               type="email"
-              placeholder="Email"
+              placeholder="salesperson Email"
               name="email"
               id="email"
             />
@@ -35,13 +35,14 @@ function UserLogin(props) {
             />
           </div>
         </div>
+
         <div className="buttons" id="register">
           <button className="is-primary is-rounded is-fullwidth button">
             Login
           </button>
         </div>
       </form>
-    </>
+    </div>
   );
 }
 

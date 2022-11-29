@@ -4,14 +4,14 @@ function EditStore(props) {
   const store = props.stores.find((store) => {
     return store.id === props.currentStoreId;
   });
-  // console.log(props.stores);
+  console.log(store);
 
   const [editStore, setEditStore] = useState({
     storename: store.storename,
     storephone: store.storephone,
     address: store.address,
   });
-
+  // console.log(editStore);
   const handleSubmit = (e) => {
     e.preventDefault();
     const edit = {
